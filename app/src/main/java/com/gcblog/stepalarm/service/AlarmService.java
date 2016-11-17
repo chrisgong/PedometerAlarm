@@ -4,7 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import com.gcblog.stepalarm.view.AlarmScreenActivity;
+import com.gcblog.stepalarm.view.activity.AlarmScreenActivity;
 
 public class AlarmService extends Service {
 

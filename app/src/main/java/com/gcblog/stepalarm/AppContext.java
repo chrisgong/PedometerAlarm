@@ -12,16 +12,20 @@ import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
 public class AppContext extends Application {
 
-    // 初始化
-    private static AppContext mInstance = new AppContext();
+    private static AppContext INSTANCE = null;
 
-    public static AppContext getInstance() {
-        return mInstance;
+    public static AppContext getInstance(){
+        return INSTANCE;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        if(INSTANCE == null){
+            INSTANCE = this;
+        }
+
         RealmSet.init();
         Stetho.initialize(
                 Stetho.newInitializerBuilder(this)

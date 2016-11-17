@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="steps">
+        <item>30步</item>
+        <item>20步</item>
+        <item>10步</item>
+        <item>5步</item>
+        <item>0步</item>
+    </string-array>
+
+    <string-array name="sounds">
+        <item>We Are The Others</item>
+        <item>平凡之路</item>
+        <item>Price Tag</item>
+        <item>Via via</item>
+    </string-array>
+</resources>

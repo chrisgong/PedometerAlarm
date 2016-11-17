@@ -3,11 +3,10 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical"
-              android:background="@color/bgTitleLeft"
-              android:paddingLeft="12dip"
-              android:paddingRight="12dip"
-              android:visibility="gone"
-              >
+              android:background="@color/bgTitleLeftContent"
+              android:paddingRight="12dp"
+              android:paddingLeft="12dp"
+              android:visibility="gone">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,22 +20,23 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tv_content_am_pm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="上午"
                 android:textColor="@android:color/white"
                 android:textSize="14sp"/>
 
             <TextView
+                android:id="@+id/tv_content_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="12:30"
+                android:layout_marginLeft="5dip"
                 android:textColor="@android:color/white"
                 android:textSize="52sp"/>
         </LinearLayout>
 
         <Switch
-            android:id="@+id/switch1"
+            android:id="@+id/sw_content_effect"
             android:layout_width="wrap_content"
             android:layout_height="90dp"
             android:layout_alignParentEnd="true"
@@ -51,7 +51,7 @@
         android:orientation="vertical">
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/cb_content_repeat"
             android:layout_width="wrap_content"
             android:layout_height="50dip"
             android:layout_alignParentLeft="true"
@@ -69,7 +69,7 @@
             android:orientation="horizontal">
 
             <ToggleButton
-                android:id="@+id/tb_sunday"
+                android:id="@+id/tb_content_sunday"
                 android:layout_width="40dip"
                 android:layout_height="40dip"
                 android:layout_marginRight="3dip"
@@ -79,7 +79,7 @@
                 android:textOn="日"/>
 
             <ToggleButton
-                android:id="@+id/tb_monday"
+                android:id="@+id/tb_content_monday"
                 android:layout_width="40dip"
                 android:layout_height="40dip"
                 android:layout_marginRight="3dip"
@@ -89,7 +89,7 @@
                 android:textOn="一"/>
 
             <ToggleButton
-                android:id="@+id/tb_tuesday"
+                android:id="@+id/tb_content_tuesday"
                 android:layout_width="40dip"
                 android:layout_height="40dip"
                 android:layout_marginRight="3dip"
@@ -99,7 +99,7 @@
                 android:textOn="二"/>
 
             <ToggleButton
-                android:id="@+id/tb_wednesday"
+                android:id="@+id/tb_content_wednesday"
                 android:layout_width="40dip"
                 android:layout_height="40dip"
                 android:layout_marginRight="3dip"
@@ -109,7 +109,7 @@
                 android:textOn="三"/>
 
             <ToggleButton
-                android:id="@+id/tb_thursday"
+                android:id="@+id/tb_content_thursday"
                 android:layout_width="40dip"
                 android:layout_height="40dip"
                 android:layout_marginRight="3dip"
@@ -119,7 +119,7 @@
                 android:textOn="四"/>
 
             <ToggleButton
-                android:id="@+id/tb_friday"
+                android:id="@+id/tb_content_friday"
                 android:layout_width="40dip"
                 android:layout_height="40dip"
                 android:layout_marginRight="3dip"
@@ -129,7 +129,7 @@
                 android:textOn="五"/>
 
             <ToggleButton
-                android:id="@+id/tb_saturday"
+                android:id="@+id/tb_content_saturday"
                 android:layout_width="40dip"
                 android:layout_height="40dip"
                 android:background="@drawable/radiobutton"
@@ -139,6 +139,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layout_content_sound"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center|left"
@@ -150,6 +151,7 @@
                 android:src="@drawable/ic_notifications_white_24dp"/>
 
             <TextView
+                android:id="@+id/tv_content_sound_name"
                 android:layout_width="wrap_content"
                 android:layout_height="50dip"
                 android:layout_marginLeft="10dip"
@@ -159,6 +161,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layout_content_step"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center|left"
@@ -170,6 +173,7 @@
                 android:src="@drawable/ic_directions_walk_white_24dp"/>
 
             <TextView
+                android:id="@+id/tv_content_step"
                 android:layout_width="wrap_content"
                 android:layout_height="50dip"
                 android:layout_marginLeft="10dip"
@@ -192,7 +196,7 @@
             android:orientation="vertical">
 
             <CheckBox
-                android:id="@+id/cb_vibrate"
+                android:id="@+id/cb_content_vibrate"
                 android:layout_width="wrap_content"
                 android:layout_height="50dip"
                 android:button="@drawable/checkbox"
@@ -201,8 +205,8 @@
                 android:textColor="@android:color/white"/>
 
             <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_content_tag"
+                android:layout_width="match_parent"
                 android:layout_height="50dip"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
@@ -219,21 +223,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical">
-
-            <LinearLayout
-                android:layout_width="100dip"
-                android:layout_height="50dip"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:gravity="center_vertical|left"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_delete_white_24dp"/>
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/layout_expend_less"
@@ -257,6 +246,22 @@
                 android:layout_height="1px"
                 android:layout_alignParentBottom="true"
                 android:background="@color/line1_light_white"/>
+
+            <LinearLayout
+                android:id="@+id/layout_content_del"
+                android:layout_width="100dip"
+                android:layout_height="50dip"
+                android:gravity="center_vertical|left"
+                android:orientation="horizontal"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_delete_white_24dp"/>
+            </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

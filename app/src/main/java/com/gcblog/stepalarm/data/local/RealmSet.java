@@ -28,7 +28,7 @@ public class RealmSet {
      */
     public static void init() {
         RealmConfiguration config = new RealmConfiguration.Builder(AppContext.getInstance().getApplicationContext())
-                .name("cim.realm")
+                .name("alarm.realm")
                 .schemaVersion(REALM_VERSION)
                 .build();
         Realm.deleteRealm(config);

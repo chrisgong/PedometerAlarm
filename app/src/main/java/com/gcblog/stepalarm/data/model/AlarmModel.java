@@ -2,35 +2,35 @@ package com.gcblog.stepalarm.data.model;
 
 import android.net.Uri;
 
-public class AlarmModel {
+import java.util.ArrayList;
 
-	public static final int SUNDAY = 0;
-	public static final int MONDAY = 1;
-	public static final int TUESDAY = 2;
-	public static final int WEDNESDAY = 3;
-	public static final int THURSDAY = 4;
-	public static final int FRDIAY = 5;
-	public static final int SATURDAY = 6;
-	
-	public long id = -1;
-	public int timeHour;
-	public int timeMinute;
-	private boolean repeatingDays[];
-	public boolean repeatWeekly;
-	public Uri alarmTone;
-	public String name;
-	public boolean isEnabled;
-	
-	public AlarmModel() {
-		repeatingDays = new boolean[7];
-	}
-	
-	public void setRepeatingDay(int dayOfWeek, boolean value) {
-		repeatingDays[dayOfWeek] = value;
-	}
-	
-	public boolean getRepeatingDay(int dayOfWeek) {
-		return repeatingDays[dayOfWeek];
-	}
-	
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class AlarmModel extends RealmObject {
+
+    @PrimaryKey
+    public long id;
+
+    public int timeHour;
+    public int timeMinute;
+    public RealmList<RepeatDays> repeatingDays;
+    public boolean repeatWeekly;
+    public int alarmSoundRes;
+    public String name;
+    public boolean isEnabled;
+
+    public AlarmModel() {
+    }
+
+    public AlarmModel(int timeHour, int timeMinute, RealmList<RepeatDays> repeatingDays, boolean repeatWeekly, int alarmSoundRes, String name, boolean isEnabled) {
+        this.timeHour = timeHour;
+        this.timeMinute = timeMinute;
+        this.repeatingDays = repeatingDays;
+        this.repeatWeekly = repeatWeekly;
+        this.alarmSoundRes = alarmSoundRes;
+        this.name = name;
+        this.isEnabled = isEnabled;
+    }
 }

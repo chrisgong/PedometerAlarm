@@ -50,31 +50,31 @@ public class AlarmManagerHelper extends BroadcastReceiver {
 				boolean alarmSet = false;
 				
 				//First check if it's later in the week
-				for (int dayOfWeek = Calendar.SUNDAY; dayOfWeek <= Calendar.SATURDAY; ++dayOfWeek) {
-					if (alarm.getRepeatingDay(dayOfWeek - 1) && dayOfWeek >= nowDay &&
-							!(dayOfWeek == nowDay && alarm.timeHour < nowHour) &&
-							!(dayOfWeek == nowDay && alarm.timeHour == nowHour && alarm.timeMinute <= nowMinute)) {
-						calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
-						
-						setAlarm(context, calendar, pIntent);
-						alarmSet = true;
-						break;
-					}
-				}
+//				for (int dayOfWeek = Calendar.SUNDAY; dayOfWeek <= Calendar.SATURDAY; ++dayOfWeek) {
+//					if (alarm.getRepeatingDay(dayOfWeek - 1) && dayOfWeek >= nowDay &&
+//							!(dayOfWeek == nowDay && alarm.timeHour < nowHour) &&
+//							!(dayOfWeek == nowDay && alarm.timeHour == nowHour && alarm.timeMinute <= nowMinute)) {
+//						calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+//
+//						setAlarm(context, calendar, pIntent);
+//						alarmSet = true;
+//						break;
+//					}
+//				}
 				
 				//Else check if it's earlier in the week
-				if (!alarmSet) {
-					for (int dayOfWeek = Calendar.SUNDAY; dayOfWeek <= Calendar.SATURDAY; ++dayOfWeek) {
-						if (alarm.getRepeatingDay(dayOfWeek - 1) && dayOfWeek <= nowDay && alarm.repeatWeekly) {
-							calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
-							calendar.add(Calendar.WEEK_OF_YEAR, 1);
-							
-							setAlarm(context, calendar, pIntent);
-							alarmSet = true;
-							break;
-						}
-					}
-				}
+//				if (!alarmSet) {
+//					for (int dayOfWeek = Calendar.SUNDAY; dayOfWeek <= Calendar.SATURDAY; ++dayOfWeek) {
+//						if (alarm.getRepeatingDay(dayOfWeek - 1) && dayOfWeek <= nowDay && alarm.repeatWeekly) {
+//							calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+//							calendar.add(Calendar.WEEK_OF_YEAR, 1);
+//
+//							setAlarm(context, calendar, pIntent);
+//							alarmSet = true;
+//							break;
+//						}
+//					}
+//				}
 			}
 		}
 	}
@@ -112,7 +112,7 @@ public class AlarmManagerHelper extends BroadcastReceiver {
 		intent.putExtra(NAME, model.name);
 		intent.putExtra(TIME_HOUR, model.timeHour);
 		intent.putExtra(TIME_MINUTE, model.timeMinute);
-		intent.putExtra(TONE, model.alarmTone.toString());
+//		intent.putExtra(TONE, model.alarmTone.toString());
 		
 		return PendingIntent.getService(context, (int) model.id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}

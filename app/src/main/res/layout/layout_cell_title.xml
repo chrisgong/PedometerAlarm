@@ -4,8 +4,8 @@
               android:layout_height="wrap_content"
               android:orientation="vertical"
               android:background="@color/bgTitleLeft"
-              android:paddingLeft="12dip"
-              android:paddingRight="12dip"
+              android:paddingRight="12dp"
+              android:paddingLeft="12dp"
               android:baselineAligned="false">
 
     <RelativeLayout
@@ -20,22 +20,23 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tv_title_am_pm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="上午"
                 android:textColor="@android:color/white"
                 android:textSize="14sp"/>
 
             <TextView
+                android:id="@+id/tv_title_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="12:30"
+                android:layout_marginLeft="5dip"
                 android:textColor="@android:color/white"
                 android:textSize="52sp"/>
         </LinearLayout>
 
         <Switch
-            android:id="@+id/switch1"
+            android:id="@+id/sw_title_effect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -49,10 +50,10 @@
         android:gravity="center_vertical">
 
         <TextView
+            android:id="@+id/tv_title_date"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="明天"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="bold"/>

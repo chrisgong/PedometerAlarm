@@ -1,4 +1,4 @@
-package com.gcblog.stepalarm.view;
+package com.gcblog.stepalarm.view.activity;
 
 import android.app.Activity;
 import android.content.Context;

@@ -1,14 +1,9 @@
-ext.support_library_version = "23.4.0"//android系统支持库
-ext.constraint_version = "1.0.0-alpha1"//android系统支持库
+ext.support_library_version = "25.0.0"//android系统支持库
 ext.retrofit_version = '2.0.2'//网络注解框架库
-ext.logger_version = '1.12'//日志输出库
 ext.reactivex_version = "1.1.6"//RX库
 ext.reactivex_android_version = "1.2.1"//RXAndroid库
-ext.msgpack_version = "0.6.11"//Message Pack库
-ext.aa_version = '4.0.0'//Android Annotations
+ext.aa_version = '4.1.0'//Android Annotations
 ext.okhttp_version = '3.2.0'//网络
-ext.picasso_version = '2.5.2'//图片加载
-ext.umeng_version = '6.0.0'//友盟
 
 ext.espresso_version = '2.2.2'//android UI测试库
 ext.test_runner_version = '0.5'//test runner
@@ -16,31 +11,14 @@ ext.robolectric_version = '3.0-rc3'//测试第三方库
 ext.junit_version = '4.12'//junit
 ext.espresso_version = '2.2.2'//espresso
 
-ext.leakcanary_version = '1.3.1'//内存分析
 ext.stetho_version = '1.3.1'//chrome支持
 ext.realm_stetho_version = '0.9.0'//realm chrome支持
-
-ext.dialog_version = '1.0.0.9'//Heart rate dialog
-ext.imagepicker_version = '1.0.2.3'//相册选择图片库
-ext.recyclerview_version = '23.2.1'//引入recyclerView
 
 ext.nineoldandroids_version = '2.4.0'//动画兼容支持库
 ext.picasso_version = '2.5.2'//图片展示库
 ext.compressor_version = '1.0.2'//图片压缩库
 ext.pdf_version = '2.0.3'//pdf库
 
-final VERSION_DEV = "dev"
-final VERSION_QA = "qa";
-final VERSION_STABLE = "formal"
-
-ext.interface_version = VERSION_DEV //服务器
-ext.umengAppKey = (interface_version.equals(VERSION_STABLE)) ? "54b64162fd98c5c631000d4a" : "566fe37767e58ef8d1002e38"
-
-ext.monkey = false //是否打开monkey配置
-
-ext.verCode = 10200 //项目版本号
-ext.verName = "1.2.0" + (monkey ? ".mk" : "") //项目版本名称
-
-//支持SDK版本
-ext.min_sdk = 11
-ext.target_sdk = 23
+ext.folding_cell = '1.0.1'
+ext.datetimepicker = '0.2.0'
+ext.meterialdialog = '1.3.1'

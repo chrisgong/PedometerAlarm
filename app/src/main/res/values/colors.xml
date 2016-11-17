@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="line1_light_white">#e6e6e6</color>
+    <color name="bgTitleLeftContent">#eb594691</color>
     <color name="bgTitleLeft">#594691</color>
     <color name="bgBackSideColor">#f4f0ff</color>
 </resources>
