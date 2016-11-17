@@ -41,7 +41,7 @@ public class AlarmAdapter extends RecyclerViewAdapterBase<AlarmModel, AlarmItemV
     @Override
     public void onBindViewHolder(ViewWrapper<AlarmItemView> holder, int position) {
         AlarmItemView view = holder.getView();
-        view.bind(mList.get(position), position, this);
+        view.bind(this, mList.get(position), position, this);
     }
 
     @Override

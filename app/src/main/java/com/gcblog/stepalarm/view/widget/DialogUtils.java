@@ -32,11 +32,11 @@ public class DialogUtils {
         listView.setDividerHeight(0);
         listView.setAdapter(arrayAdapter);
         MaterialDialog dialog = new MaterialDialog(context).setTitle("选择步数").setContentView(listView);
+        dialog.setPositiveButton("CANCEL", view -> dialog.dismiss());
         dialog.show();
         listView.setOnItemClickListener((adapterView, view1, i, l) -> {
             dialog.dismiss();
         });
-        dialog.setNegativeButton("CANCEL", view -> dialog.dismiss());
     }
 
     public static void showSoundChooseDialog(Context context) {
@@ -49,11 +49,11 @@ public class DialogUtils {
         listView.setDividerHeight(0);
         listView.setAdapter(arrayAdapter);
         MaterialDialog dialog = new MaterialDialog(context).setTitle("选择闹钟音乐").setContentView(listView);
+        dialog.setPositiveButton("CANCEL", view -> dialog.dismiss());
         dialog.show();
         listView.setOnItemClickListener((adapterView, view1, i, l) -> {
             dialog.dismiss();
         });
-        dialog.setNegativeButton("CANCEL", view -> dialog.dismiss());
     }
 
     public static void showInputTagsDialog(Context context) {

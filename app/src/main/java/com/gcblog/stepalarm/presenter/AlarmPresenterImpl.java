@@ -33,6 +33,11 @@ public class AlarmPresenterImpl implements AlarmContract.Presenter, IAlarmCreate
     }
 
     @Override
+    public void updateAlarm(AlarmModel model) {
+        AlarmDatabaseManager.updateAlarm(model);
+    }
+
+    @Override
     public void deleteAlarm(int id) {
         AlarmDatabaseManager.deleteAlarm(id);
         for (int i = 0; i < mAlarmModels.size(); i++) {

@@ -1,18 +1,24 @@
 package com.gcblog.stepalarm.view.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
+import android.util.Log;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.gcblog.stepalarm.R;
+import com.gcblog.stepalarm.data.AlarmContract;
 import com.gcblog.stepalarm.data.model.AlarmModel;
-import com.gcblog.stepalarm.data.model.RepeatDays;
+import com.gcblog.stepalarm.presenter.AlarmPresenterImpl;
 import com.gcblog.stepalarm.view.widget.DialogUtils;
 import com.ramotion.foldingcell.FoldingCell;
 
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
@@ -48,7 +54,7 @@ public class AlarmItemView extends LinearLayout {
     protected CheckBox mCbContentRepeat;
 
     @ViewById(R.id.cb_content_vibrate)
-    protected TextView mCbContentVibrate;
+    protected CheckBox mCbContentVibrate;
 
     @ViewById(R.id.tb_content_sunday)
     protected ToggleButton mTbContentSunday;
@@ -83,17 +89,28 @@ public class AlarmItemView extends LinearLayout {
     @ViewById(R.id.layout_folding_cell)
     protected FoldingCell mFoldingCell;
 
+    @Bean
+    protected AlarmPresenterImpl mPresenter;
+
     private int mPosition;
 
     private IFolderCellUnfoldListener mListener;
+
+    private AlarmModel mModel;
+
+    private AlarmAdapter mAdapter;
+
+    private boolean isInitEffect = true;
 
     public AlarmItemView(Context context) {
         super(context);
     }
 
-    public void bind(AlarmModel model, int position, IFolderCellUnfoldListener listener) {
+    public void bind(AlarmAdapter alarmAdapter, AlarmModel model, int position, IFolderCellUnfoldListener listener) {
+        this.mModel = model;
         this.mPosition = position;
         this.mListener = listener;
+        this.mAdapter = alarmAdapter;
 
         int hour = model.timeHour;
         int min = model.timeMinute;
@@ -104,9 +121,9 @@ public class AlarmItemView extends LinearLayout {
         }
 
         String minStr = "";
-        if(min < 10){
+        if (min < 10) {
             minStr = "0" + min;
-        }else{
+        } else {
             minStr = String.valueOf(min);
         }
 
@@ -118,40 +135,50 @@ public class AlarmItemView extends LinearLayout {
         mTvContentTime.setText(hour + ":" + minStr);
         mSwContentEffect.setChecked(model.isEnabled);
 
+        handlerRepeat(model);
+        isInitEffect = false;
+    }
+
+    private void handlerRepeat(AlarmModel model) {
         StringBuffer repeatDays = new StringBuffer();
-        if (model.repeatingDays != null) {
-            for (int i = 0; i < model.repeatingDays.size(); i++) {
-                RepeatDays days = model.repeatingDays.get(i);
-                if (days.value) {
-                    switch (days.dayOfWeek) {
-                        case 0:
-                            repeatDays.append("周日").append(" ");
-                            break;
-                        case 1:
-                            repeatDays.append("周一").append(" ");
-                            break;
-                        case 2:
-                            repeatDays.append("周二").append(" ");
-                            break;
-                        case 3:
-                            repeatDays.append("周三").append(" ");
-                            break;
-                        case 4:
-                            repeatDays.append("周四").append(" ");
-                            break;
-                        case 5:
-                            repeatDays.append("周五").append(" ");
-                            break;
-                        case 6:
-                            repeatDays.append("周六").append(" ");
-                            break;
-                    }
-                }
-            }
-        } else {
-            repeatDays.append("明天");
+        if (model.repeatSunday) {
+            repeatDays.append("周日").append(" ");
         }
-        mTvTitleDate.setText(repeatDays);
+
+        if (model.repeatMonday) {
+            repeatDays.append("周一").append(" ");
+        }
+
+        if (model.repeatTuesday) {
+            repeatDays.append("周二").append(" ");
+        }
+
+        if (model.repeatWednesday) {
+            repeatDays.append("周三").append(" ");
+        }
+
+        if (model.repeatThursday) {
+            repeatDays.append("周四").append(" ");
+        }
+
+        if (model.repeatFriday) {
+            repeatDays.append("周五").append(" ");
+        }
+
+        if (model.repeatSaturday) {
+            repeatDays.append("周六").append(" ");
+        }
+
+        mTbContentSunday.setChecked(model.repeatSunday);
+        mTbContentMonday.setChecked(model.repeatMonday);
+        mTbContentTuesday.setChecked(model.repeatTuesday);
+        mTbContentWednesday.setChecked(model.repeatWednesday);
+        mTbContentThursday.setChecked(model.repeatThursday);
+        mTbContentFriday.setChecked(model.repeatFriday);
+        mTbContentSaturday.setChecked(model.repeatSaturday);
+        mCbContentRepeat.setChecked(model.repeatWeekly);
+        mCbContentVibrate.setChecked(model.vibrate);
+        mTvTitleDate.setText(TextUtils.isEmpty(repeatDays) ? "明天" : repeatDays.toString());
     }
 
     @Click({R.id.layout_expend_less, R.id.layout_expend_more})
@@ -173,5 +200,56 @@ public class AlarmItemView extends LinearLayout {
     @Click(R.id.tv_content_tag)
     protected void openTagSetting() {
         DialogUtils.showInputTagsDialog(getContext());
+    }
+
+    @Click(R.id.layout_content_del)
+    protected void openDelSetting() {
+        DialogUtils.showDeleteDialog(getContext());
+    }
+
+    @CheckedChange({R.id.cb_content_repeat, R.id.cb_content_vibrate, R.id.tb_content_sunday, R.id.tb_content_monday, R.id.tb_content_tuesday, R.id.tb_content_wednesday, R.id.tb_content_thursday, R.id.tb_content_friday, R.id.tb_content_saturday})
+    protected void onChooseRepeat(CompoundButton evt, boolean checked) {
+        switch (evt.getId()) {
+            case R.id.tb_content_sunday:
+                mModel.repeatSunday = checked;
+                break;
+            case R.id.tb_content_monday:
+                mModel.repeatMonday = checked;
+                break;
+            case R.id.tb_content_tuesday:
+                mModel.repeatTuesday = checked;
+                break;
+            case R.id.tb_content_wednesday:
+                mModel.repeatWednesday = checked;
+                break;
+            case R.id.tb_content_thursday:
+                mModel.repeatThursday = checked;
+                break;
+            case R.id.tb_content_friday:
+                mModel.repeatFriday = checked;
+                break;
+            case R.id.tb_content_saturday:
+                mModel.repeatSaturday = checked;
+                break;
+            case R.id.cb_content_repeat:
+                mModel.repeatWeekly = checked;
+                break;
+            case R.id.cb_content_vibrate:
+                mModel.vibrate = checked;
+                break;
+        }
+        mPresenter.updateAlarm(mModel);
+        handlerRepeat(mModel);
+    }
+
+    @CheckedChange({R.id.sw_title_effect, R.id.sw_content_effect})
+    protected void onEffectContentChange() {
+        if (mSwTitleEffect.isChecked() == mModel.isEnabled && mSwContentEffect.isChecked() == mModel.isEnabled) {
+            return;
+        }
+        mModel.isEnabled = !mModel.isEnabled;
+        mPresenter.updateAlarm(mModel);
+        mSwTitleEffect.setChecked(mModel.isEnabled);
+        mSwContentEffect.setChecked(mModel.isEnabled);
     }
 }

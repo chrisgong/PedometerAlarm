@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/PedometerAlarm.iml" filepath="$PROJECT_DIR$/PedometerAlarm.iml" />
       <module fileurl="file://$PROJECT_DIR$/StepAlarm.iml" filepath="$PROJECT_DIR$/StepAlarm.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/folding-cell/folding-cell.iml" filepath="$PROJECT_DIR$/folding-cell/folding-cell.iml" />
       <module fileurl="file://$PROJECT_DIR$/folding-cell/folding-cell.iml" filepath="$PROJECT_DIR$/folding-cell/folding-cell.iml" />
     </modules>
   </component>

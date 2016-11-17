@@ -19,5 +19,7 @@ public interface AlarmContract {
         void createAlarm(int hour, int min);
 
         void deleteAlarm(int id);
+
+        void updateAlarm(AlarmModel model);
     }
 }
