@@ -2,7 +2,7 @@ package com.gcblog.stepalarm.view.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -11,7 +11,6 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.gcblog.stepalarm.R;
-import com.gcblog.stepalarm.data.AlarmContract;
 import com.gcblog.stepalarm.data.model.AlarmModel;
 import com.gcblog.stepalarm.presenter.AlarmPresenterImpl;
 import com.gcblog.stepalarm.view.widget.DialogUtils;
@@ -27,7 +26,7 @@ import org.androidannotations.annotations.ViewById;
  * Created by gc on 2016/11/17.
  */
 @EViewGroup(R.layout.layout_alarm_cell)
-public class AlarmItemView extends LinearLayout {
+public class AlarmItemView extends LinearLayout implements View.OnClickListener {
 
     @ViewById(R.id.tv_title_am_pm)
     protected TextView mTvTitleAmPm;
@@ -98,19 +97,14 @@ public class AlarmItemView extends LinearLayout {
 
     private AlarmModel mModel;
 
-    private AlarmAdapter mAdapter;
-
-    private boolean isInitEffect = true;
-
     public AlarmItemView(Context context) {
         super(context);
     }
 
-    public void bind(AlarmAdapter alarmAdapter, AlarmModel model, int position, IFolderCellUnfoldListener listener) {
+    public void bind(AlarmModel model, int position, IFolderCellUnfoldListener listener) {
         this.mModel = model;
         this.mPosition = position;
         this.mListener = listener;
-        this.mAdapter = alarmAdapter;
 
         int hour = model.timeHour;
         int min = model.timeMinute;
@@ -136,7 +130,6 @@ public class AlarmItemView extends LinearLayout {
         mSwContentEffect.setChecked(model.isEnabled);
 
         handlerRepeat(model);
-        isInitEffect = false;
     }
 
     private void handlerRepeat(AlarmModel model) {
@@ -189,22 +182,22 @@ public class AlarmItemView extends LinearLayout {
 
     @Click(R.id.layout_content_sound)
     protected void openSoundSetting() {
-        DialogUtils.showSoundChooseDialog(getContext());
+        DialogUtils.showSoundChooseDialog(getContext(), this);
     }
 
     @Click(R.id.layout_content_step)
     protected void openStepSetting() {
-        DialogUtils.showStepChooseDialog(getContext());
+        DialogUtils.showStepChooseDialog(getContext(), this);
     }
 
     @Click(R.id.tv_content_tag)
     protected void openTagSetting() {
-        DialogUtils.showInputTagsDialog(getContext());
+        DialogUtils.showInputTagsDialog(getContext(), this);
     }
 
     @Click(R.id.layout_content_del)
     protected void openDelSetting() {
-        DialogUtils.showDeleteDialog(getContext());
+        DialogUtils.showDeleteDialog(getContext(), this);
     }
 
     @CheckedChange({R.id.cb_content_repeat, R.id.cb_content_vibrate, R.id.tb_content_sunday, R.id.tb_content_monday, R.id.tb_content_tuesday, R.id.tb_content_wednesday, R.id.tb_content_thursday, R.id.tb_content_friday, R.id.tb_content_saturday})
@@ -243,13 +236,15 @@ public class AlarmItemView extends LinearLayout {
     }
 
     @CheckedChange({R.id.sw_title_effect, R.id.sw_content_effect})
-    protected void onEffectContentChange() {
-        if (mSwTitleEffect.isChecked() == mModel.isEnabled && mSwContentEffect.isChecked() == mModel.isEnabled) {
-            return;
-        }
-        mModel.isEnabled = !mModel.isEnabled;
+    protected void onEffectTitleChange(CompoundButton evt, boolean checked) {
+        mSwTitleEffect.setChecked(checked);
+        mSwContentEffect.setChecked(checked);
+        mModel.isEnabled = checked;
         mPresenter.updateAlarm(mModel);
-        mSwTitleEffect.setChecked(mModel.isEnabled);
-        mSwContentEffect.setChecked(mModel.isEnabled);
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 }

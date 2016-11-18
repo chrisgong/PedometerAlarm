@@ -22,7 +22,7 @@ public class DialogUtils {
      *
      * @param context
      */
-    public static void showStepChooseDialog(Context context) {
+    public static void showStepChooseDialog(Context context, View.OnClickListener listener) {
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, context.getResources().getStringArray(R.array.steps));
         ListView listView = new ListView(context);
         listView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -39,7 +39,7 @@ public class DialogUtils {
         });
     }
 
-    public static void showSoundChooseDialog(Context context) {
+    public static void showSoundChooseDialog(Context context, View.OnClickListener listener) {
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, context.getResources().getStringArray(R.array.sounds));
         ListView listView = new ListView(context);
         listView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -56,7 +56,7 @@ public class DialogUtils {
         });
     }
 
-    public static void showInputTagsDialog(Context context) {
+    public static void showInputTagsDialog(Context context, View.OnClickListener listener) {
         EditText editText = new EditText(context);
         editText.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         editText.setSingleLine();
@@ -64,15 +64,21 @@ public class DialogUtils {
         int dpAsPixels = (int) (8 * scale + 0.5f);
         editText.setPadding(0, dpAsPixels, 0, dpAsPixels);
         MaterialDialog dialog = new MaterialDialog(context).setTitle("标签").setContentView(editText);
+        dialog.setNegativeButton("CANCEL", listener);
+        dialog.setPositiveButton("OK", listener);
+        dialog.show();
+    }
+
+    public static void showDeleteDialog(Context context, View.OnClickListener listener) {
+        MaterialDialog dialog = new MaterialDialog(context).setMessage("是否需要删除闹钟?");
         dialog.setNegativeButton("CANCEL", view -> dialog.dismiss());
         dialog.setPositiveButton("OK", view -> dialog.dismiss());
         dialog.show();
     }
 
-    public static void showDeleteDialog(Context context) {
-        MaterialDialog dialog = new MaterialDialog(context).setMessage("是否需要删除闹钟?");
-        dialog.setNegativeButton("CANCEL", view -> dialog.dismiss());
-        dialog.setPositiveButton("OK", view -> dialog.dismiss());
-        dialog.show();
+    public interface IDialogClickCallback {
+        void onPositiveButtonClick(int type);
+
+        void onNegativeButtonClick(int type);
     }
 }
