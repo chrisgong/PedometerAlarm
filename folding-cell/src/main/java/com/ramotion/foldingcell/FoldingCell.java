@@ -90,6 +90,9 @@ public class FoldingCell extends RelativeLayout {
         if (mUnfolded || mAnimationInProgress) return;
 
         if (skipAnimation) {
+            if(mListener != null){
+                mListener.onUnfolded(false);
+            }
             setStateToUnfolded();
             return;
         }
@@ -146,6 +149,9 @@ public class FoldingCell extends RelativeLayout {
     public void fold(boolean skipAnimation) {
         if (!mUnfolded || mAnimationInProgress) return;
         if (skipAnimation) {
+            if(mListener != null){
+                mListener.onUnfolded(false);
+            }
             setStateToFolded();
             return;
         }

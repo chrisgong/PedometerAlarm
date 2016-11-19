@@ -28,7 +28,6 @@ import java.util.Locale;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, AlarmContract.View {
-    private static final String TIME_PATTERN = "HH:mm";
 
     @ViewById(R.id.recycler_alarm)
     protected RecyclerView mRecyclerView;
@@ -74,11 +73,16 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
 
     @Override
     public void init(ArrayList<AlarmModel> models) {
-        mAdapter.setList(mFab, models);
+        mAdapter.setList(getFragmentManager(), mFab, models, mPresenter);
     }
 
     @Override
     public void refresh() {
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void refreshCreateButton(int position) {
+        mAdapter.handlerUnfold(position);
     }
 }

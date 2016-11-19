@@ -1,10 +1,12 @@
 package com.gcblog.stepalarm.view.adapter;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
 import android.view.ViewGroup;
 
 import com.gcblog.stepalarm.data.model.AlarmModel;
+import com.gcblog.stepalarm.presenter.AlarmPresenterImpl;
 
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
@@ -25,11 +27,17 @@ public class AlarmAdapter extends RecyclerViewAdapterBase<AlarmModel, AlarmItemV
 
     private HashSet<Integer> mUnfoldedIndexes = new HashSet<>();
 
-    private FloatingActionButton mButton;
+    private FloatingActionButton mCreateButton;
 
-    public void setList(FloatingActionButton fab, List<AlarmModel> list) {
+    private FragmentManager mFragmentManager;
+
+    private AlarmPresenterImpl mPresenter;
+
+    public void setList(FragmentManager manager, FloatingActionButton fab, List<AlarmModel> list, AlarmPresenterImpl presenter) {
         this.mList = list;
-        this.mButton = fab;
+        this.mCreateButton = fab;
+        this.mFragmentManager = manager;
+        this.mPresenter = presenter;
         notifyDataSetChanged();
     }
 
@@ -41,7 +49,7 @@ public class AlarmAdapter extends RecyclerViewAdapterBase<AlarmModel, AlarmItemV
     @Override
     public void onBindViewHolder(ViewWrapper<AlarmItemView> holder, int position) {
         AlarmItemView view = holder.getView();
-        view.bind(mList.get(position), position, this);
+        view.bind(mPresenter, mList.get(position), position, this, mFragmentManager);
     }
 
     @Override
@@ -65,10 +73,14 @@ public class AlarmAdapter extends RecyclerViewAdapterBase<AlarmModel, AlarmItemV
             registerUnfold(position);
         }
 
+        refreshCreateButton();
+    }
+
+    public void refreshCreateButton() {
         if (mUnfoldedIndexes.size() == 0) {
-            mButton.show();
+            mCreateButton.show();
         } else {
-            mButton.hide();
+            mCreateButton.hide();
         }
     }
 }

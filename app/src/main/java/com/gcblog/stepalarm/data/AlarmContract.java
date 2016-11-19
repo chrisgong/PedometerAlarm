@@ -26,5 +26,6 @@ public final class AlarmContract {
 	public static final int SATURDAY = 6;
 
 	public static String IDD = "id";
-	
+	public static String HIDE = "hide";
+
 }

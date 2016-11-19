@@ -27,23 +27,10 @@ public class AlarmModel extends RealmObject {
     public int alarmSoundRes;
     public String name;
     public boolean isEnabled;
+    public int step;
+    public String tag;
+    public boolean hide;
 
     public AlarmModel() {
-    }
-
-    public AlarmModel(int timeHour, int timeMinute, boolean repeatSunday, boolean repeatMonday, boolean repeatTuesday, boolean repeatWednesday, boolean repeatThursday, boolean repeatFriday, boolean repeatSaturday, boolean repeatWeekly, int alarmSoundRes, String name, boolean isEnabled) {
-        this.timeHour = timeHour;
-        this.timeMinute = timeMinute;
-        this.repeatSunday = repeatSunday;
-        this.repeatMonday = repeatMonday;
-        this.repeatTuesday = repeatTuesday;
-        this.repeatWednesday = repeatWednesday;
-        this.repeatThursday = repeatThursday;
-        this.repeatFriday = repeatFriday;
-        this.repeatSaturday = repeatSaturday;
-        this.repeatWeekly = repeatWeekly;
-        this.alarmSoundRes = alarmSoundRes;
-        this.name = name;
-        this.isEnabled = isEnabled;
     }
 }

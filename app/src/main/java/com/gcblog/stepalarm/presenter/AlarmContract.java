@@ -13,12 +13,14 @@ public interface AlarmContract {
         void init(ArrayList<AlarmModel> models);
 
         void refresh();
+
+        void refreshCreateButton(int position);
     }
 
     interface Presenter {
         void createAlarm(int hour, int min);
 
-        void deleteAlarm(int id);
+        void deleteAlarm(long id, int mPosition);
 
         void updateAlarm(AlarmModel model);
     }

@@ -208,7 +208,8 @@
                 android:layout_height="50dip"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
-                android:text="标签"
+                android:hint="标签"
+                android:textColorHint="@android:color/white"
                 android:textColor="@android:color/white"/>
 
             <View

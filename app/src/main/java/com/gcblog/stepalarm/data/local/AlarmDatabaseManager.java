@@ -3,9 +3,11 @@ package com.gcblog.stepalarm.data.local;
 import com.gcblog.stepalarm.data.AlarmContract;
 import com.gcblog.stepalarm.data.model.AlarmModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by gc on 2016/11/16.
@@ -21,7 +23,7 @@ public class AlarmDatabaseManager {
      */
     public static long setUniqueId(Realm realm) {
         Number num = realm.where(AlarmModel.class).max(AlarmContract.IDD);
-        if (num == null) return 1;
+        if (num == null) return 0;
         else return ((long) num + 1);
     }
 
@@ -63,6 +65,19 @@ public class AlarmDatabaseManager {
     }
 
     /**
+     * 隐藏闹钟
+     *
+     * @param id
+     */
+    public static void hideAlarm(long id) {
+        RealmSet.getDefault().executeTransaction(realm -> {
+            AlarmModel model = getAlarm(id);
+            model.hide = true;
+            realm.copyToRealmOrUpdate(model);
+        });
+    }
+
+    /**
      * 查询闹钟
      *
      * @param id
@@ -78,7 +93,12 @@ public class AlarmDatabaseManager {
      * @return
      */
     public static List<AlarmModel> getAlarms() {
-        return RealmSet.getDefault().copyFromRealm(RealmSet.getDefault().where(AlarmModel.class).findAll());
+        ArrayList<AlarmModel> models = new ArrayList<>();
+        RealmResults realmResults = RealmSet.getDefault().where(AlarmModel.class).equalTo(AlarmContract.HIDE, false).findAll();
+        if (realmResults != null) {
+            return RealmSet.getDefault().copyFromRealm(realmResults);
+        }
+        return models;
     }
 
     /**

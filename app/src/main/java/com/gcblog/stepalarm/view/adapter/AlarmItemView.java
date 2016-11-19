@@ -1,6 +1,6 @@
 package com.gcblog.stepalarm.view.adapter;
 
-import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
@@ -16,15 +16,12 @@ import com.android.datetimepicker.time.TimePickerDialog;
 import com.gcblog.stepalarm.R;
 import com.gcblog.stepalarm.data.model.AlarmModel;
 import com.gcblog.stepalarm.presenter.AlarmPresenterImpl;
-import com.gcblog.stepalarm.view.activity.MainActivity;
-import com.gcblog.stepalarm.view.widget.DialogUtils;
+import com.gcblog.stepalarm.view.widget.DialogManager;
 import com.ramotion.foldingcell.FoldingCell;
 
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.Calendar;
@@ -33,10 +30,7 @@ import java.util.Calendar;
  * Created by gc on 2016/11/17.
  */
 @EViewGroup(R.layout.layout_alarm_cell)
-public class AlarmItemView extends LinearLayout implements View.OnClickListener, TimePickerDialog.OnTimeSetListener {
-
-    @RootContext
-    protected Activity mContext;
+public class AlarmItemView extends LinearLayout implements TimePickerDialog.OnTimeSetListener, DialogManager.IDialogClickCallback {
 
     @ViewById(R.id.tv_title_am_pm)
     protected TextView mTvTitleAmPm;
@@ -46,6 +40,9 @@ public class AlarmItemView extends LinearLayout implements View.OnClickListener,
 
     @ViewById(R.id.tv_title_date)
     protected TextView mTvTitleDate;
+
+    @ViewById(R.id.tv_title_tag)
+    protected TextView mTvTitleTag;
 
     @ViewById(R.id.sw_title_effect)
     protected Switch mSwTitleEffect;
@@ -98,7 +95,6 @@ public class AlarmItemView extends LinearLayout implements View.OnClickListener,
     @ViewById(R.id.layout_folding_cell)
     protected FoldingCell mFoldingCell;
 
-    @Bean
     protected AlarmPresenterImpl mPresenter;
 
     private int mPosition;
@@ -107,26 +103,31 @@ public class AlarmItemView extends LinearLayout implements View.OnClickListener,
 
     private AlarmModel mModel;
 
-    private Calendar mCalendar;
+    private FragmentManager mFragmentManager;
+
+    private DialogManager mDialogManager;
 
     public AlarmItemView(Context context) {
         super(context);
     }
 
-    public void bind(AlarmModel model, int position, IFolderCellUnfoldListener listener) {
+    public void bind(AlarmPresenterImpl presenter, AlarmModel model, int position, IFolderCellUnfoldListener listener, FragmentManager manager) {
         this.mModel = model;
         this.mPosition = position;
         this.mListener = listener;
+        this.mFragmentManager = manager;
+        this.mPresenter = presenter;
+        mDialogManager = new DialogManager(this, getContext());
 
-        handlerRepeat(model);
+        handlerDate(model);
     }
 
-    private void handlerRepeat(AlarmModel model) {
+    private void handlerDate(AlarmModel model) {
         int hour = model.timeHour;
         int min = model.timeMinute;
-        String amPm = "上午";
+        String amPm = getResources().getString(R.string.am);
         if (hour > 12) {
-            amPm = "下午";
+            amPm =  getResources().getString(R.string.pm);
             hour = hour - 12;
         }
 
@@ -154,61 +155,14 @@ public class AlarmItemView extends LinearLayout implements View.OnClickListener,
         mTbContentSaturday.setChecked(model.repeatSaturday);
         mCbContentRepeat.setChecked(model.repeatWeekly);
         mCbContentVibrate.setChecked(model.vibrate);
-        mTvTitleDate.setText(getAlarmDate(mModel));
-    }
-
-    /**
-     * 判断闹钟日期
-     *
-     * @param model
-     * @return
-     */
-    private String getAlarmDate(AlarmModel model) {
-
-
-        StringBuffer repeatDays = new StringBuffer();
-        if (model.repeatSunday) {
-            repeatDays.append("周日").append(" ");
+        mTvTitleDate.setText(mPresenter.getAlarmDate(mModel));
+        mTvContentTags.setText(model.tag);
+        if(!TextUtils.isEmpty(model.tag)) {
+            mTvTitleTag.setVisibility(View.VISIBLE);
+            mTvTitleTag.setText(model.tag);
+        }else{
+            mTvTitleTag.setVisibility(View.GONE);
         }
-
-        if (model.repeatMonday) {
-            repeatDays.append("周一").append(" ");
-        }
-
-        if (model.repeatTuesday) {
-            repeatDays.append("周二").append(" ");
-        }
-
-        if (model.repeatWednesday) {
-            repeatDays.append("周三").append(" ");
-        }
-
-        if (model.repeatThursday) {
-            repeatDays.append("周四").append(" ");
-        }
-
-        if (model.repeatFriday) {
-            repeatDays.append("周五").append(" ");
-        }
-
-        if (model.repeatSaturday) {
-            repeatDays.append("周六").append(" ");
-        }
-
-        if (TextUtils.isEmpty(repeatDays)) {
-            long nowTime = System.currentTimeMillis();
-            mCalendar.set(Calendar.HOUR_OF_DAY, model.timeHour);
-            mCalendar.set(Calendar.MINUTE, model.timeMinute);
-            long alarmTime = mCalendar.getTimeInMillis();
-
-            if (nowTime < alarmTime) {
-                repeatDays.append("今天");
-            } else {
-                repeatDays.append("明天");
-            }
-        }
-
-        return repeatDays.toString();
     }
 
     @Click({R.id.layout_expend_less, R.id.layout_expend_more})
@@ -219,22 +173,22 @@ public class AlarmItemView extends LinearLayout implements View.OnClickListener,
 
     @Click(R.id.layout_content_sound)
     protected void openSoundSetting() {
-        DialogUtils.showSoundChooseDialog(getContext(), this);
+        mDialogManager.showSoundChooseDialog();
     }
 
     @Click(R.id.layout_content_step)
     protected void openStepSetting() {
-        DialogUtils.showStepChooseDialog(getContext(), this);
+        mDialogManager.showStepChooseDialog();
     }
 
     @Click(R.id.tv_content_tag)
     protected void openTagSetting() {
-        DialogUtils.showInputTagsDialog(getContext(), this);
+        mDialogManager.showInputTagsDialog();
     }
 
     @Click(R.id.layout_content_del)
     protected void openDelSetting() {
-        DialogUtils.showDeleteDialog(getContext(), this);
+        mDialogManager.showDeleteDialog();
     }
 
     @CheckedChange({R.id.cb_content_repeat, R.id.cb_content_vibrate, R.id.tb_content_sunday, R.id.tb_content_monday, R.id.tb_content_tuesday, R.id.tb_content_wednesday, R.id.tb_content_thursday, R.id.tb_content_friday, R.id.tb_content_saturday})
@@ -269,7 +223,7 @@ public class AlarmItemView extends LinearLayout implements View.OnClickListener,
                 break;
         }
         mPresenter.updateAlarm(mModel);
-        handlerRepeat(mModel);
+        handlerDate(mModel);
     }
 
     @CheckedChange({R.id.sw_title_effect, R.id.sw_content_effect})
@@ -282,12 +236,7 @@ public class AlarmItemView extends LinearLayout implements View.OnClickListener,
 
     @Click({R.id.layout_title_time, R.id.layout_content_time})
     protected void changeTime() {
-        TimePickerDialog.newInstance(this, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), true).show(mContext.getFragmentManager(), "");
-    }
-
-    @Override
-    public void onClick(View view) {
-
+        TimePickerDialog.newInstance(this, Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), true).show(mFragmentManager, "");
     }
 
     @Override
@@ -295,6 +244,29 @@ public class AlarmItemView extends LinearLayout implements View.OnClickListener,
         mModel.timeHour = hourOfDay;
         mModel.timeMinute = minute;
         mPresenter.updateAlarm(mModel);
-        handlerRepeat(mModel);
+        handlerDate(mModel);
+    }
+
+    @Override
+    public void onResult(int type, Object result) {
+        switch (type) {
+            case DialogManager.TYPE_DEL:
+                mFoldingCell.setUnfoldedListener(unfolded -> {
+                    if (!unfolded) mPresenter.deleteAlarm(mModel.id, mPosition);
+                });
+                mFoldingCell.toggle(true);
+                mListener.handlerUnfold(mPosition);
+                break;
+            case DialogManager.TYPE_TAG:
+                mModel.tag = (String) result;
+                mPresenter.updateAlarm(mModel);
+                break;
+            case DialogManager.TYPE_SOUND:
+                break;
+            case DialogManager.TYPE_STEP:
+                mModel.step = (int) result;
+                mPresenter.updateAlarm(mModel);
+                break;
+        }
     }
 }
