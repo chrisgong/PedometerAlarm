@@ -12,7 +12,7 @@ import android.os.PowerManager.WakeLock;
 import android.util.Log;
 import android.view.WindowManager;
 
-import com.gcblog.stepalarm.service.AlarmManagerHelper;
+import com.gcblog.stepalarm.service.AlarmReceiver;
 
 public class AlarmScreenActivity extends Activity {
 	
@@ -29,11 +29,11 @@ public class AlarmScreenActivity extends Activity {
 		
 		//Setup layout
 //		this.setContentView(R.layout.activity_alarm_screen);
-
-		String name = getIntent().getStringExtra(AlarmManagerHelper.NAME);
-		int timeHour = getIntent().getIntExtra(AlarmManagerHelper.TIME_HOUR, 0);
-		int timeMinute = getIntent().getIntExtra(AlarmManagerHelper.TIME_MINUTE, 0);
-		String tone = getIntent().getStringExtra(AlarmManagerHelper.TONE);
+//
+//		String name = getIntent().getStringExtra(AlarmReceiver.NAME);
+//		int timeHour = getIntent().getIntExtra(AlarmReceiver.TIME_HOUR, 0);
+//		int timeMinute = getIntent().getIntExtra(AlarmReceiver.TIME_MINUTE, 0);
+//		String tone = getIntent().getStringExtra(AlarmReceiver.TONE);
 		
 //		TextView tvName = (TextView) findViewById(R.id.alarm_screen_name);
 //		tvName.setText(name);
@@ -52,21 +52,21 @@ public class AlarmScreenActivity extends Activity {
 //		});
 
 		//Play alarm tone
-		mPlayer = new MediaPlayer();
-		try {
-			if (tone != null && !tone.equals("")) {
-				Uri toneUri = Uri.parse(tone);
-				if (toneUri != null) {
-					mPlayer.setDataSource(this, toneUri);
-					mPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
-					mPlayer.setLooping(true);
-					mPlayer.prepare();
-					mPlayer.start();
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		mPlayer = new MediaPlayer();
+//		try {
+//			if (tone != null && !tone.equals("")) {
+//				Uri toneUri = Uri.parse(tone);
+//				if (toneUri != null) {
+//					mPlayer.setDataSource(this, toneUri);
+//					mPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+//					mPlayer.setLooping(true);
+//					mPlayer.prepare();
+//					mPlayer.start();
+//				}
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		
 		//Ensure wakelock release
 		Runnable releaseWakelock = new Runnable() {

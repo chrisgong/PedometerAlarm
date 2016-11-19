@@ -1,191 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical"
-              android:background="@color/bgTitleLeftContent"
-              android:paddingRight="12dp"
-              android:paddingLeft="12dp"
-              android:visibility="gone">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:id="@+id/layout_content_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:gravity="center|bottom"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_content_am_pm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:textSize="14sp"/>
-
-            <TextView
-                android:id="@+id/tv_content_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dip"
-                android:textColor="@android:color/white"
-                android:textSize="52sp"/>
-        </LinearLayout>
-
-        <Switch
-            android:id="@+id/sw_content_effect"
-            android:layout_width="wrap_content"
-            android:layout_height="90dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"/>
-    </RelativeLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bgTitleLeftContent"
+    android:orientation="vertical"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:visibility="gone">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center|left"
         android:orientation="vertical">
 
-        <CheckBox
-            android:id="@+id/cb_content_repeat"
-            android:layout_width="wrap_content"
-            android:layout_height="50dip"
-            android:button="@drawable/checkbox"
-            android:gravity="right|center"
-            android:text="  重复"
-            android:textColor="@android:color/white"/>
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_height="match_parent">
 
-            <ToggleButton
-                android:id="@+id/tb_content_sunday"
-                android:layout_width="40dip"
-                android:layout_height="40dip"
-                android:layout_marginRight="3dip"
-                android:background="@drawable/radiobutton"
-                android:textColor="@android:color/white"
-                android:textOff="日"
-                android:textOn="日"/>
-
-            <ToggleButton
-                android:id="@+id/tb_content_monday"
-                android:layout_width="40dip"
-                android:layout_height="40dip"
-                android:layout_marginRight="3dip"
-                android:background="@drawable/radiobutton"
-                android:textColor="@android:color/white"
-                android:textOff="一"
-                android:textOn="一"/>
-
-            <ToggleButton
-                android:id="@+id/tb_content_tuesday"
-                android:layout_width="40dip"
-                android:layout_height="40dip"
-                android:layout_marginRight="3dip"
-                android:background="@drawable/radiobutton"
-                android:textColor="@android:color/white"
-                android:textOff="二"
-                android:textOn="二"/>
-
-            <ToggleButton
-                android:id="@+id/tb_content_wednesday"
-                android:layout_width="40dip"
-                android:layout_height="40dip"
-                android:layout_marginRight="3dip"
-                android:background="@drawable/radiobutton"
-                android:textColor="@android:color/white"
-                android:textOff="三"
-                android:textOn="三"/>
-
-            <ToggleButton
-                android:id="@+id/tb_content_thursday"
-                android:layout_width="40dip"
-                android:layout_height="40dip"
-                android:layout_marginRight="3dip"
-                android:background="@drawable/radiobutton"
-                android:textColor="@android:color/white"
-                android:textOff="四"
-                android:textOn="四"/>
-
-            <ToggleButton
-                android:id="@+id/tb_content_friday"
-                android:layout_width="40dip"
-                android:layout_height="40dip"
-                android:layout_marginRight="3dip"
-                android:background="@drawable/radiobutton"
-                android:textColor="@android:color/white"
-                android:textOff="五"
-                android:textOn="五"/>
-
-            <ToggleButton
-                android:id="@+id/tb_content_saturday"
-                android:layout_width="40dip"
-                android:layout_height="40dip"
-                android:background="@drawable/radiobutton"
-                android:textColor="@android:color/white"
-                android:textOff="六"
-                android:textOn="六"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout_content_sound"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center|left"
-            android:orientation="horizontal">
-
-            <ImageView
+            <LinearLayout
+                android:id="@+id/layout_content_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_notifications_white_24dp"/>
+                android:layout_centerVertical="true"
+                android:gravity="center|bottom"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_content_sound_name"
+                <TextView
+                    android:id="@+id/tv_content_am_pm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_content_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dip"
+                    android:textColor="@android:color/white"
+                    android:textSize="52sp" />
+            </LinearLayout>
+
+            <Switch
+                android:id="@+id/sw_content_effect"
                 android:layout_width="wrap_content"
-                android:layout_height="50dip"
-                android:layout_marginLeft="10dip"
-                android:gravity="center"
-                android:text="恬静海洋"
-                android:textColor="@android:color/white"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout_content_step"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center|left"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_directions_walk_white_24dp"/>
-
-            <TextView
-                android:id="@+id/tv_content_step"
-                android:layout_width="wrap_content"
-                android:layout_height="50dip"
-                android:layout_marginLeft="10dip"
-                android:gravity="center"
-                android:text="30步"
-                android:textColor="@android:color/white"/>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center|left"
-        android:orientation="vertical">
+                android:layout_height="90dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -194,73 +57,212 @@
             android:orientation="vertical">
 
             <CheckBox
-                android:id="@+id/cb_content_vibrate"
+                android:id="@+id/cb_content_repeat"
                 android:layout_width="wrap_content"
                 android:layout_height="50dip"
                 android:button="@drawable/checkbox"
                 android:gravity="right|center"
-                android:text="  震动"
-                android:textColor="@android:color/white"/>
-
-            <TextView
-                android:id="@+id/tv_content_tag"
-                android:layout_width="match_parent"
-                android:layout_height="50dip"
-                android:layout_centerVertical="true"
-                android:gravity="center_vertical"
-                android:hint="标签"
-                android:textColorHint="@android:color/white"
-                android:textColor="@android:color/white"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="@android:color/white"/>
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical">
+                android:text="  重复"
+                android:textColor="@android:color/white" />
 
             <LinearLayout
-                android:id="@+id/layout_expend_less"
-                android:layout_width="100dip"
-                android:layout_height="50dip"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="8dip"
-                android:gravity="center_vertical|right"
+                android:id="@+id/layout_content_weekly_choose"
+                android:layout_width="match_parent"
+                android:layout_height="40dip"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ToggleButton
+                    android:id="@+id/tb_content_sunday"
+                    android:layout_width="40dip"
+                    android:layout_height="40dip"
+                    android:layout_marginRight="3dip"
+                    android:background="@drawable/radiobutton"
+                    android:textColor="@android:color/white"
+                    android:textOff="日"
+                    android:textOn="日" />
+
+                <ToggleButton
+                    android:id="@+id/tb_content_monday"
+                    android:layout_width="40dip"
+                    android:layout_height="40dip"
+                    android:layout_marginRight="3dip"
+                    android:background="@drawable/radiobutton"
+                    android:textColor="@android:color/white"
+                    android:textOff="一"
+                    android:textOn="一" />
+
+                <ToggleButton
+                    android:id="@+id/tb_content_tuesday"
+                    android:layout_width="40dip"
+                    android:layout_height="40dip"
+                    android:layout_marginRight="3dip"
+                    android:background="@drawable/radiobutton"
+                    android:textColor="@android:color/white"
+                    android:textOff="二"
+                    android:textOn="二" />
+
+                <ToggleButton
+                    android:id="@+id/tb_content_wednesday"
+                    android:layout_width="40dip"
+                    android:layout_height="40dip"
+                    android:layout_marginRight="3dip"
+                    android:background="@drawable/radiobutton"
+                    android:textColor="@android:color/white"
+                    android:textOff="三"
+                    android:textOn="三" />
+
+                <ToggleButton
+                    android:id="@+id/tb_content_thursday"
+                    android:layout_width="40dip"
+                    android:layout_height="40dip"
+                    android:layout_marginRight="3dip"
+                    android:background="@drawable/radiobutton"
+                    android:textColor="@android:color/white"
+                    android:textOff="四"
+                    android:textOn="四" />
+
+                <ToggleButton
+                    android:id="@+id/tb_content_friday"
+                    android:layout_width="40dip"
+                    android:layout_height="40dip"
+                    android:layout_marginRight="3dip"
+                    android:background="@drawable/radiobutton"
+                    android:textColor="@android:color/white"
+                    android:textOff="五"
+                    android:textOn="五" />
+
+                <ToggleButton
+                    android:id="@+id/tb_content_saturday"
+                    android:layout_width="40dip"
+                    android:layout_height="40dip"
+                    android:background="@drawable/radiobutton"
+                    android:textColor="@android:color/white"
+                    android:textOff="六"
+                    android:textOn="六" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_content_sound"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|left"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/iv_expend_less"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_expand_less_white_24dp"/>
+                    android:src="@drawable/ic_notifications_white_24dp" />
+
+                <TextView
+                    android:id="@+id/tv_content_sound_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dip"
+                    android:layout_marginLeft="10dip"
+                    android:gravity="center"
+                    android:text="无"
+                    android:textColor="@android:color/white" />
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_alignParentBottom="true"
-                android:background="@color/line1_light_white"/>
-
             <LinearLayout
-                android:id="@+id/layout_content_del"
-                android:layout_width="100dip"
-                android:layout_height="50dip"
-                android:gravity="center_vertical|left"
-                android:orientation="horizontal"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true">
+                android:id="@+id/layout_content_step"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|left"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_delete_white_24dp"/>
+                    android:src="@drawable/ic_directions_walk_white_24dp" />
+
+                <TextView
+                    android:id="@+id/tv_content_step"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dip"
+                    android:layout_marginLeft="10dip"
+                    android:gravity="center"
+                    android:text="30步"
+                    android:textColor="@android:color/white" />
             </LinearLayout>
-        </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|left"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|left"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:id="@+id/cb_content_vibrate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dip"
+                    android:button="@drawable/checkbox"
+                    android:gravity="right|center"
+                    android:text="  震动"
+                    android:textColor="@android:color/white" />
+
+                <TextView
+                    android:id="@+id/tv_content_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dip"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:hint="标签"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@android:color/white" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dip"
+                android:gravity="center_vertical">
+
+                <LinearLayout
+                    android:id="@+id/layout_expend_less"
+                    android:layout_width="100dip"
+                    android:layout_height="50dip"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="8dip"
+                    android:gravity="center_vertical|right"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_expend_less"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_expand_less_white_24dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_content_del"
+                    android:layout_width="100dip"
+                    android:layout_height="50dip"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center_vertical|left"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_delete_white_24dp" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

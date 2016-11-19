@@ -4,9 +4,12 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -16,6 +19,7 @@ import com.android.datetimepicker.time.TimePickerDialog;
 import com.gcblog.stepalarm.R;
 import com.gcblog.stepalarm.data.model.AlarmModel;
 import com.gcblog.stepalarm.presenter.AlarmPresenterImpl;
+import com.gcblog.stepalarm.support.Utils;
 import com.gcblog.stepalarm.view.widget.DialogManager;
 import com.ramotion.foldingcell.FoldingCell;
 
@@ -62,6 +66,9 @@ public class AlarmItemView extends LinearLayout implements TimePickerDialog.OnTi
     @ViewById(R.id.cb_content_vibrate)
     protected CheckBox mCbContentVibrate;
 
+    @ViewById(R.id.layout_content_weekly_choose)
+    protected LinearLayout mLayoutWeeklyChoose;
+
     @ViewById(R.id.tb_content_sunday)
     protected ToggleButton mTbContentSunday;
 
@@ -107,6 +114,9 @@ public class AlarmItemView extends LinearLayout implements TimePickerDialog.OnTi
 
     private DialogManager mDialogManager;
 
+    private boolean mEffectChecked = false;
+    private Animation mAnimationShowWeekly, mAnimationHideWeekly;
+
     public AlarmItemView(Context context) {
         super(context);
     }
@@ -118,6 +128,8 @@ public class AlarmItemView extends LinearLayout implements TimePickerDialog.OnTi
         this.mFragmentManager = manager;
         this.mPresenter = presenter;
         mDialogManager = new DialogManager(this, getContext());
+        mAnimationShowWeekly = AnimationUtils.loadAnimation(getContext(), R.anim.anim_in);
+        mAnimationHideWeekly = AnimationUtils.loadAnimation(getContext(), R.anim.anim_out);
 
         handlerDate(model);
     }
@@ -127,7 +139,7 @@ public class AlarmItemView extends LinearLayout implements TimePickerDialog.OnTi
         int min = model.timeMinute;
         String amPm = getResources().getString(R.string.am);
         if (hour > 12) {
-            amPm =  getResources().getString(R.string.pm);
+            amPm = getResources().getString(R.string.pm);
             hour = hour - 12;
         }
 
@@ -157,23 +169,32 @@ public class AlarmItemView extends LinearLayout implements TimePickerDialog.OnTi
         mCbContentVibrate.setChecked(model.vibrate);
         mTvTitleDate.setText(mPresenter.getAlarmDate(mModel));
         mTvContentTags.setText(model.tag);
-        if(!TextUtils.isEmpty(model.tag)) {
+        if (!TextUtils.isEmpty(model.tag)) {
             mTvTitleTag.setVisibility(View.VISIBLE);
             mTvTitleTag.setText(model.tag);
-        }else{
+        } else {
             mTvTitleTag.setVisibility(View.GONE);
+        }
+
+        if (!TextUtils.isEmpty(model.alarmSoundTitle)) {
+            mTvContentSoundName.setText(model.alarmSoundTitle);
+        } else {
+            mTvContentSoundName.setText(getResources().getString(R.string.none));
         }
     }
 
     @Click({R.id.layout_expend_less, R.id.layout_expend_more})
     protected void handlerFold() {
         mFoldingCell.toggle(false);
+        if (!mFoldingCell.isUnfolded()) {
+            mLayoutWeeklyChoose.clearAnimation();
+        }
         if (mListener != null) mListener.handlerUnfold(mPosition);
     }
 
     @Click(R.id.layout_content_sound)
     protected void openSoundSetting() {
-        mDialogManager.showSoundChooseDialog();
+        mPresenter.openSoundChoose(mPosition);
     }
 
     @Click(R.id.layout_content_step)
@@ -191,8 +212,8 @@ public class AlarmItemView extends LinearLayout implements TimePickerDialog.OnTi
         mDialogManager.showDeleteDialog();
     }
 
-    @CheckedChange({R.id.cb_content_repeat, R.id.cb_content_vibrate, R.id.tb_content_sunday, R.id.tb_content_monday, R.id.tb_content_tuesday, R.id.tb_content_wednesday, R.id.tb_content_thursday, R.id.tb_content_friday, R.id.tb_content_saturday})
-    protected void onChooseRepeat(CompoundButton evt, boolean checked) {
+    @CheckedChange({R.id.tb_content_sunday, R.id.tb_content_monday, R.id.tb_content_tuesday, R.id.tb_content_wednesday, R.id.tb_content_thursday, R.id.tb_content_friday, R.id.tb_content_saturday})
+    protected void onChooseDayRepeat(CompoundButton evt, boolean checked) {
         switch (evt.getId()) {
             case R.id.tb_content_sunday:
                 mModel.repeatSunday = checked;
@@ -215,23 +236,57 @@ public class AlarmItemView extends LinearLayout implements TimePickerDialog.OnTi
             case R.id.tb_content_saturday:
                 mModel.repeatSaturday = checked;
                 break;
-            case R.id.cb_content_repeat:
-                mModel.repeatWeekly = checked;
-                break;
-            case R.id.cb_content_vibrate:
-                mModel.vibrate = checked;
-                break;
         }
         mPresenter.updateAlarm(mModel);
+        mPresenter.resetAlarm();
         handlerDate(mModel);
     }
 
+    @CheckedChange(R.id.cb_content_repeat)
+    protected void onChooseRepeat(CompoundButton evt, boolean checked) {
+        mModel.repeatWeekly = checked;
+        mModel.repeatSunday = checked;
+        mModel.repeatMonday = checked;
+        mModel.repeatTuesday = checked;
+        mModel.repeatWednesday = checked;
+        mModel.repeatThursday = checked;
+        mModel.repeatFriday = checked;
+        mModel.repeatSaturday = checked;
+        mPresenter.updateAlarm(mModel);
+        mPresenter.resetAlarm();
+        handlerDate(mModel);
+        handlerWeeklyChoose(checked);
+    }
+
+    private void handlerWeeklyChoose(boolean checked) {
+        mLayoutWeeklyChoose.setVisibility(checked ? View.VISIBLE : View.GONE);
+        mLayoutWeeklyChoose.startAnimation(checked ? mAnimationShowWeekly : mAnimationHideWeekly);
+
+        int height = Utils.measureViewHight(mFoldingCell);
+        int chooseHeight = Utils.dip2px(getContext(), 40);
+
+        LayoutParams params = (LayoutParams) mFoldingCell.getLayoutParams();
+        params.height = checked ? height : height - chooseHeight;
+        mFoldingCell.setLayoutParams(params);
+    }
+
+    @CheckedChange(R.id.cb_content_vibrate)
+    protected void onChooseVibrate(CompoundButton evt, boolean checked) {
+        mModel.vibrate = checked;
+        mPresenter.updateAlarm(mModel);
+    }
+
     @CheckedChange({R.id.sw_title_effect, R.id.sw_content_effect})
-    protected void onEffectTitleChange(CompoundButton evt, boolean checked) {
+    protected void onEffectTitleChange(CompoundButton cb, boolean checked) {
+        mEffectChecked = false;
         mSwTitleEffect.setChecked(checked);
         mSwContentEffect.setChecked(checked);
         mModel.isEnabled = checked;
         mPresenter.updateAlarm(mModel);
+        if (!mEffectChecked) {
+            mPresenter.resetAlarm();
+            mEffectChecked = true;
+        }
     }
 
     @Click({R.id.layout_title_time, R.id.layout_content_time})
@@ -260,8 +315,6 @@ public class AlarmItemView extends LinearLayout implements TimePickerDialog.OnTi
             case DialogManager.TYPE_TAG:
                 mModel.tag = (String) result;
                 mPresenter.updateAlarm(mModel);
-                break;
-            case DialogManager.TYPE_SOUND:
                 break;
             case DialogManager.TYPE_STEP:
                 mModel.step = (int) result;

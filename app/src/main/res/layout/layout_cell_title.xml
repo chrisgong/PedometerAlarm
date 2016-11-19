@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical"
-              android:background="@color/bgTitleLeft"
-              android:paddingRight="12dp"
-              android:paddingLeft="12dp"
-              android:baselineAligned="false">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bgTitleLeft"
+    android:baselineAligned="false"
+    android:orientation="vertical"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tv_title_time"
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dip"
                 android:textColor="@android:color/white"
-                android:textSize="52sp"/>
+                android:textSize="52sp" />
         </LinearLayout>
 
         <Switch
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -54,11 +54,11 @@
             android:id="@+id/tv_title_tag"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginRight="3dip"
             android:gravity="center"
             android:textColor="@color/colorTitleTag"
-            android:layout_marginRight="3dip"
             android:textSize="14sp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_title_date"
@@ -68,7 +68,7 @@
             android:gravity="center"
             android:textColor="@android:color/white"
             android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/layout_expend_more"
@@ -84,14 +84,12 @@
                 android:id="@+id/iv_expend_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_expand_more_white_24dp"/>
+                android:src="@drawable/ic_expand_more_white_24dp" />
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_alignParentBottom="true"
-            android:background="@color/line1_light_white"/>
     </RelativeLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/line1_light_white" />
 </LinearLayout>

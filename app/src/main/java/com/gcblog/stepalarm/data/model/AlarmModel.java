@@ -1,10 +1,7 @@
 package com.gcblog.stepalarm.data.model;
 
-import android.net.Uri;
+import java.util.Calendar;
 
-import java.util.ArrayList;
-
-import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -24,13 +21,33 @@ public class AlarmModel extends RealmObject {
     public boolean repeatSaturday;
     public boolean repeatWeekly;
     public boolean vibrate;
-    public int alarmSoundRes;
-    public String name;
+    public String alarmSoundUrl;
+    public String alarmSoundTitle;
     public boolean isEnabled;
     public int step;
     public String tag;
     public boolean hide;
 
     public AlarmModel() {
+    }
+
+    public boolean getRepeatingDay(int dayOfWeek) {
+        switch (dayOfWeek) {
+            case Calendar.SUNDAY:
+                return repeatSunday;
+            case Calendar.MONDAY:
+                return repeatMonday;
+            case Calendar.TUESDAY:
+                return repeatTuesday;
+            case Calendar.WEDNESDAY:
+                return repeatWednesday;
+            case Calendar.THURSDAY:
+                return repeatThursday;
+            case Calendar.FRIDAY:
+                return repeatFriday;
+            case Calendar.SATURDAY:
+                return repeatSaturday;
+        }
+        return false;
     }
 }

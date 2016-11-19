@@ -1,12 +1,15 @@
 package com.gcblog.stepalarm.presenter;
 
-import android.app.Activity;
+import android.content.Context;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.gcblog.stepalarm.data.local.AlarmDatabaseManager;
 import com.gcblog.stepalarm.data.local.IAlarmCreateListener;
 import com.gcblog.stepalarm.data.model.AlarmModel;
+import com.gcblog.stepalarm.service.AlarmManagerHelper;
 import com.gcblog.stepalarm.support.Utils;
 
 import org.androidannotations.annotations.EBean;
@@ -22,7 +25,7 @@ import java.util.Calendar;
 public class AlarmPresenterImpl implements AlarmContract.Presenter, IAlarmCreateListener {
 
     @RootContext
-    protected Activity mActivity;
+    protected Context mContext;
 
     private AlarmContract.View mView;
 
@@ -43,7 +46,16 @@ public class AlarmPresenterImpl implements AlarmContract.Presenter, IAlarmCreate
     @Override
     public void updateAlarm(AlarmModel model) {
         AlarmDatabaseManager.updateAlarm(model);
-        mView.refresh();
+    }
+
+    @Override
+    public void openSoundChoose(int position) {
+        mView.openSoundChoose(position);
+    }
+
+    @Override
+    public void resetAlarm() {
+        AlarmManagerHelper.setAlarms(mContext);
     }
 
     @Override
@@ -57,7 +69,6 @@ public class AlarmPresenterImpl implements AlarmContract.Presenter, IAlarmCreate
     public void onSuccess(AlarmModel model) {
         mAlarmModels.add(0, model);
         mView.refresh();
-        Log.e("cim", "alarm size:" + mAlarmModels.size());
     }
 
     /**
@@ -111,5 +122,22 @@ public class AlarmPresenterImpl implements AlarmContract.Presenter, IAlarmCreate
         }
 
         return repeatDays.toString();
+    }
+
+    /**
+     * 更新闹钟声音资源
+     *
+     * @param position
+     * @param soundIdUrl
+     */
+    public void updateAlarmSound(int position, String soundIdUrl) {
+        String soundResTitle = RingtoneManager.getRingtone(mContext, Uri.parse(soundIdUrl)).getTitle(mContext);
+        mAlarmModels.get(position).alarmSoundTitle = soundResTitle;
+        mAlarmModels.get(position).alarmSoundUrl = soundIdUrl;
+        AlarmDatabaseManager.updateSoundRes((int) mAlarmModels.get(position).id, soundIdUrl, soundResTitle);
+    }
+
+    public void clearAlarm(){
+        AlarmManagerHelper.cancelAlarms(mContext);
     }
 }

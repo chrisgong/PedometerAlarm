@@ -1,5 +1,8 @@
 package com.gcblog.stepalarm.support;
 
+import android.content.Context;
+import android.view.View;
+
 import com.gcblog.stepalarm.data.model.AlarmModel;
 
 import java.util.ArrayList;
@@ -33,5 +36,23 @@ public class Utils {
             }
         }
         return mid;
+    }
+
+    /**
+     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+     */
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
+    /**
+     * 测量控件高度
+     */
+    public static int measureViewHight(View view) {
+        int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        view.measure(w, h);
+        return view.getMeasuredHeight();
     }
 }

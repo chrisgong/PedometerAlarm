@@ -14,7 +14,7 @@ public interface AlarmContract {
 
         void refresh();
 
-        void refreshCreateButton(int position);
+        void openSoundChoose(int position);
     }
 
     interface Presenter {
@@ -23,5 +23,9 @@ public interface AlarmContract {
         void deleteAlarm(long id, int mPosition);
 
         void updateAlarm(AlarmModel model);
+
+        void openSoundChoose(int position);
+
+        void resetAlarm();
     }
 }

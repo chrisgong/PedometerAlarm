@@ -1,5 +1,8 @@
 package com.gcblog.stepalarm.view.activity;
 
+import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
 
     private Calendar mCalendar;
 
+    private int mChooseSoundPostion;
+
     @AfterViews
     protected void initView() {
         mCalendar = Calendar.getInstance();
@@ -82,7 +87,19 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     }
 
     @Override
-    public void refreshCreateButton(int position) {
-        mAdapter.handlerUnfold(position);
+    public void openSoundChoose(int position) {
+        this.mChooseSoundPostion = position;
+        Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+        startActivityForResult(intent, 100);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+            mPresenter.updateAlarmSound(mChooseSoundPostion, uri.toString());
+            refresh();
+        }
     }
 }

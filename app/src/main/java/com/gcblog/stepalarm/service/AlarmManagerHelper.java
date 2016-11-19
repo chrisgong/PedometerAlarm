@@ -1,119 +1,123 @@
 package com.gcblog.stepalarm.service;
 
-import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 
+import com.gcblog.stepalarm.data.AlarmContract;
 import com.gcblog.stepalarm.data.local.AlarmDatabaseManager;
 import com.gcblog.stepalarm.data.model.AlarmModel;
 
 import java.util.Calendar;
 import java.util.List;
 
-public class AlarmManagerHelper extends BroadcastReceiver {
+/**
+ * Created by Administrator on 2016/11/19.
+ */
+public class AlarmManagerHelper {
 
-	public static final String ID = "id";
-	public static final String NAME = "name";
-	public static final String TIME_HOUR = "timeHour";
-	public static final String TIME_MINUTE = "timeMinute";
-	public static final String TONE = "alarmTone";
-	
-	@Override
-	public void onReceive(Context context, Intent intent) {
-		setAlarms(context);
-	}
-	
-	public static void setAlarms(Context context) {
-		cancelAlarms(context);
-		
-		AlarmDatabaseManager dbHelper = new AlarmDatabaseManager();
+    /**
+     * 设置系统闹钟
+     *
+     * @param context
+     */
+    public static void setAlarms(Context context) {
+        cancelAlarms(context);
+        List<AlarmModel> alarms = AlarmDatabaseManager.getAlarms();
+        alarms.stream().filter(alarm -> alarm.isEnabled).forEach(alarm -> {
+            PendingIntent pIntent = createPendingIntent(context, alarm);
 
-		List<AlarmModel> alarms =  dbHelper.getAlarms();
-		
-		for (AlarmModel alarm : alarms) {
-			if (alarm.isEnabled) {
+            //设置闹钟时间
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, alarm.timeHour);
+            calendar.set(Calendar.MINUTE, alarm.timeMinute);
+            calendar.set(Calendar.SECOND, 00);
 
-				PendingIntent pIntent = createPendingIntent(context, alarm);
+            //当前星期，日，分
+            final int nowDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+            final int nowHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+            final int nowMinute = Calendar.getInstance().get(Calendar.MINUTE);
 
-				Calendar calendar = Calendar.getInstance();
-				calendar.set(Calendar.HOUR_OF_DAY, alarm.timeHour);
-				calendar.set(Calendar.MINUTE, alarm.timeMinute);
-				calendar.set(Calendar.SECOND, 00);
+            //当前年日
+            final int nowDayOfYear = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
 
-				//Find next time to set
-				final int nowDay = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-				final int nowHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-				final int nowMinute = Calendar.getInstance().get(Calendar.MINUTE);
-				boolean alarmSet = false;
-				
-				//First check if it's later in the week
-//				for (int dayOfWeek = Calendar.SUNDAY; dayOfWeek <= Calendar.SATURDAY; ++dayOfWeek) {
-//					if (alarm.getRepeatingDay(dayOfWeek - 1) && dayOfWeek >= nowDay &&
-//							!(dayOfWeek == nowDay && alarm.timeHour < nowHour) &&
-//							!(dayOfWeek == nowDay && alarm.timeHour == nowHour && alarm.timeMinute <= nowMinute)) {
-//						calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
-//
-//						setAlarm(context, calendar, pIntent);
-//						alarmSet = true;
-//						break;
-//					}
-//				}
-				
-				//Else check if it's earlier in the week
-//				if (!alarmSet) {
-//					for (int dayOfWeek = Calendar.SUNDAY; dayOfWeek <= Calendar.SATURDAY; ++dayOfWeek) {
-//						if (alarm.getRepeatingDay(dayOfWeek - 1) && dayOfWeek <= nowDay && alarm.repeatWeekly) {
-//							calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
-//							calendar.add(Calendar.WEEK_OF_YEAR, 1);
-//
-//							setAlarm(context, calendar, pIntent);
-//							alarmSet = true;
-//							break;
-//						}
-//					}
-//				}
-			}
-		}
-	}
-	
-	@SuppressLint("NewApi")
-	private static void setAlarm(Context context, Calendar calendar, PendingIntent pIntent) {
-		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-			alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
-		} else {
-			alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
-		}
-	}
-	
-	public static void cancelAlarms(Context context) {
-		AlarmDatabaseManager dbHelper = new AlarmDatabaseManager();
-		
-		List<AlarmModel> alarms =  dbHelper.getAlarms();
-		
- 		if (alarms != null) {
-			for (AlarmModel alarm : alarms) {
-				if (alarm.isEnabled) {
-					PendingIntent pIntent = createPendingIntent(context, alarm);
-	
-					AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-					alarmManager.cancel(pIntent);
-				}
-			}
- 		}
-	}
+            if (!alarm.repeatWeekly) {
+                if (alarm.timeHour >= nowHour && alarm.timeMinute > nowMinute) {
+                    calendar.set(Calendar.DAY_OF_YEAR, nowDayOfYear);
+                } else {
+                    calendar.set(Calendar.DAY_OF_YEAR, nowDayOfYear);
+                    calendar.add(Calendar.DAY_OF_YEAR, 1);
+                }
+                setAlarm(context, calendar, pIntent);
+            } else {
+                boolean alarmSet = false;
+                //First check if it's later in the week
+                for (int dayOfWeek = Calendar.SUNDAY; dayOfWeek <= Calendar.SATURDAY; ++dayOfWeek) {
+                    if (alarm.getRepeatingDay(dayOfWeek) && dayOfWeek >= nowDayOfWeek &&
+                            !(dayOfWeek == nowDayOfWeek && alarm.timeHour < nowHour) &&
+                            !(dayOfWeek == nowDayOfWeek && alarm.timeHour == nowHour && alarm.timeMinute <= nowMinute)) {
+                        calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+                        setAlarm(context, calendar, pIntent);
+                        alarmSet = true;
+                        break;
+                    }
+                }
 
-	private static PendingIntent createPendingIntent(Context context, AlarmModel model) {
-		Intent intent = new Intent(context, AlarmService.class);
-		intent.putExtra(ID, model.id);
-		intent.putExtra(NAME, model.name);
-		intent.putExtra(TIME_HOUR, model.timeHour);
-		intent.putExtra(TIME_MINUTE, model.timeMinute);
-//		intent.putExtra(TONE, model.alarmTone.toString());
-		
-		return PendingIntent.getService(context, (int) model.id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-	}
+                //Else check if it's earlier in the week
+                if (!alarmSet) {
+                    for (int dayOfWeek = Calendar.SUNDAY; dayOfWeek <= Calendar.SATURDAY; ++dayOfWeek) {
+                        if (alarm.getRepeatingDay(dayOfWeek) && dayOfWeek <= nowDayOfWeek && alarm.repeatWeekly) {
+                            calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+                            calendar.add(Calendar.WEEK_OF_YEAR, 1);
+                            setAlarm(context, calendar, pIntent);
+                            alarmSet = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * 取消闹钟
+     *
+     * @param context
+     */
+    public static void cancelAlarms(Context context) {
+        List<AlarmModel> alarms = AlarmDatabaseManager.getAlarms();
+        if (alarms != null) {
+            Log.e("cim", "cancelAlarms");
+            alarms.stream().filter(alarm -> alarm.isEnabled).forEach(alarm -> {
+                PendingIntent pIntent = createPendingIntent(context, alarm);
+                android.app.AlarmManager alarmManager = (android.app.AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                alarmManager.cancel(pIntent);
+            });
+        }
+    }
+
+    private static void setAlarm(Context context, Calendar calendar, PendingIntent pIntent) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            Log.e("cim", "setAlarm:" + calendar.get(Calendar.DAY_OF_WEEK) + "-" + calendar.get(Calendar.DAY_OF_YEAR) + "-" + calendar.get(Calendar.HOUR_OF_DAY) + "-" + calendar.get(Calendar.MINUTE));
+            alarmManager.setExact(android.app.AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
+        } else {
+            alarmManager.set(android.app.AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
+        }
+    }
+
+    private static PendingIntent createPendingIntent(Context context, AlarmModel model) {
+        Intent intent = new Intent(context, AlarmService_.class);
+        intent.putExtra(AlarmContract.IDD, model.id);
+        intent.putExtra(AlarmContract.TIME_HOUR, model.timeHour);
+        intent.putExtra(AlarmContract.TIME_MINUTE, model.timeMinute);
+        intent.putExtra(AlarmContract.TONE, Uri.decode(model.alarmSoundUrl));
+        intent.putExtra(AlarmContract.VIBRATE, model.vibrate);
+        intent.putExtra(AlarmContract.TAG, model.tag);
+        intent.putExtra(AlarmContract.STEP, model.step);
+        return PendingIntent.getService(context, (int) model.id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
 }

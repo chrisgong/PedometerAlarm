@@ -30,18 +30,6 @@ public class AlarmDatabaseManager {
     /**
      * 创建闹钟
      *
-     * @param model
-     */
-    public static void createAlarm(AlarmModel model) {
-        RealmSet.getDefault().executeTransaction(realm -> {
-            model.id = setUniqueId(realm);
-            realm.copyToRealm(model);
-        });
-    }
-
-    /**
-     * 创建闹钟
-     *
      * @param hour
      * @param min
      */
@@ -78,6 +66,20 @@ public class AlarmDatabaseManager {
     }
 
     /**
+     * 修改闹钟铃声资源
+     *
+     * @param id
+     */
+    public static void updateSoundRes(int id, String resUrl, String resTitle) {
+        RealmSet.getDefault().executeTransaction(realm -> {
+            AlarmModel model = getAlarm(id);
+            model.alarmSoundUrl = resUrl;
+            model.alarmSoundTitle = resTitle;
+            realm.copyToRealmOrUpdate(model);
+        });
+    }
+
+    /**
      * 查询闹钟
      *
      * @param id
@@ -99,14 +101,5 @@ public class AlarmDatabaseManager {
             return RealmSet.getDefault().copyFromRealm(realmResults);
         }
         return models;
-    }
-
-    /**
-     * 删除闹钟
-     *
-     * @param id
-     */
-    public static void deleteAlarm(long id) {
-        RealmSet.getDefault().executeTransaction(realm -> realm.where(AlarmModel.class).equalTo(AlarmContract.IDD, id).findFirst().deleteFromRealm());
     }
 }
