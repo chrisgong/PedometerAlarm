@@ -1,5 +1,6 @@
 package com.gcblog.stepalarm.view.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
@@ -10,9 +11,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.android.datetimepicker.time.RadialPickerLayout;
+import com.android.datetimepicker.time.TimePickerDialog;
 import com.gcblog.stepalarm.R;
 import com.gcblog.stepalarm.data.model.AlarmModel;
 import com.gcblog.stepalarm.presenter.AlarmPresenterImpl;
+import com.gcblog.stepalarm.view.activity.MainActivity;
 import com.gcblog.stepalarm.view.widget.DialogUtils;
 import com.ramotion.foldingcell.FoldingCell;
 
@@ -20,13 +24,19 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EViewGroup;
+import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.ViewById;
+
+import java.util.Calendar;
 
 /**
  * Created by gc on 2016/11/17.
  */
 @EViewGroup(R.layout.layout_alarm_cell)
-public class AlarmItemView extends LinearLayout implements View.OnClickListener {
+public class AlarmItemView extends LinearLayout implements View.OnClickListener, TimePickerDialog.OnTimeSetListener {
+
+    @RootContext
+    protected Activity mContext;
 
     @ViewById(R.id.tv_title_am_pm)
     protected TextView mTvTitleAmPm;
@@ -97,6 +107,8 @@ public class AlarmItemView extends LinearLayout implements View.OnClickListener 
 
     private AlarmModel mModel;
 
+    private Calendar mCalendar;
+
     public AlarmItemView(Context context) {
         super(context);
     }
@@ -106,6 +118,10 @@ public class AlarmItemView extends LinearLayout implements View.OnClickListener 
         this.mPosition = position;
         this.mListener = listener;
 
+        handlerRepeat(model);
+    }
+
+    private void handlerRepeat(AlarmModel model) {
         int hour = model.timeHour;
         int min = model.timeMinute;
         String amPm = "上午";
@@ -129,10 +145,27 @@ public class AlarmItemView extends LinearLayout implements View.OnClickListener 
         mTvContentTime.setText(hour + ":" + minStr);
         mSwContentEffect.setChecked(model.isEnabled);
 
-        handlerRepeat(model);
+        mTbContentSunday.setChecked(model.repeatSunday);
+        mTbContentMonday.setChecked(model.repeatMonday);
+        mTbContentTuesday.setChecked(model.repeatTuesday);
+        mTbContentWednesday.setChecked(model.repeatWednesday);
+        mTbContentThursday.setChecked(model.repeatThursday);
+        mTbContentFriday.setChecked(model.repeatFriday);
+        mTbContentSaturday.setChecked(model.repeatSaturday);
+        mCbContentRepeat.setChecked(model.repeatWeekly);
+        mCbContentVibrate.setChecked(model.vibrate);
+        mTvTitleDate.setText(getAlarmDate(mModel));
     }
 
-    private void handlerRepeat(AlarmModel model) {
+    /**
+     * 判断闹钟日期
+     *
+     * @param model
+     * @return
+     */
+    private String getAlarmDate(AlarmModel model) {
+
+
         StringBuffer repeatDays = new StringBuffer();
         if (model.repeatSunday) {
             repeatDays.append("周日").append(" ");
@@ -162,16 +195,20 @@ public class AlarmItemView extends LinearLayout implements View.OnClickListener 
             repeatDays.append("周六").append(" ");
         }
 
-        mTbContentSunday.setChecked(model.repeatSunday);
-        mTbContentMonday.setChecked(model.repeatMonday);
-        mTbContentTuesday.setChecked(model.repeatTuesday);
-        mTbContentWednesday.setChecked(model.repeatWednesday);
-        mTbContentThursday.setChecked(model.repeatThursday);
-        mTbContentFriday.setChecked(model.repeatFriday);
-        mTbContentSaturday.setChecked(model.repeatSaturday);
-        mCbContentRepeat.setChecked(model.repeatWeekly);
-        mCbContentVibrate.setChecked(model.vibrate);
-        mTvTitleDate.setText(TextUtils.isEmpty(repeatDays) ? "明天" : repeatDays.toString());
+        if (TextUtils.isEmpty(repeatDays)) {
+            long nowTime = System.currentTimeMillis();
+            mCalendar.set(Calendar.HOUR_OF_DAY, model.timeHour);
+            mCalendar.set(Calendar.MINUTE, model.timeMinute);
+            long alarmTime = mCalendar.getTimeInMillis();
+
+            if (nowTime < alarmTime) {
+                repeatDays.append("今天");
+            } else {
+                repeatDays.append("明天");
+            }
+        }
+
+        return repeatDays.toString();
     }
 
     @Click({R.id.layout_expend_less, R.id.layout_expend_more})
@@ -243,8 +280,21 @@ public class AlarmItemView extends LinearLayout implements View.OnClickListener 
         mPresenter.updateAlarm(mModel);
     }
 
+    @Click({R.id.layout_title_time, R.id.layout_content_time})
+    protected void changeTime() {
+        TimePickerDialog.newInstance(this, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), true).show(mContext.getFragmentManager(), "");
+    }
+
     @Override
     public void onClick(View view) {
 
+    }
+
+    @Override
+    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+        mModel.timeHour = hourOfDay;
+        mModel.timeMinute = minute;
+        mPresenter.updateAlarm(mModel);
+        handlerRepeat(mModel);
     }
 }
