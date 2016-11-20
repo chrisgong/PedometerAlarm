@@ -68,6 +68,7 @@ public class DialogManager {
             dialog.dismiss();
         });
         dialog.show();
+        editText.requestFocus();
     }
 
     /**

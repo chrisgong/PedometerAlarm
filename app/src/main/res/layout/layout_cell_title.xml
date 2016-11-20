@@ -1,95 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/bgTitleLeft"
-    android:baselineAligned="false"
-    android:orientation="vertical"
-    android:paddingLeft="12dp"
-    android:paddingRight="12dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bgTitleLeft"
+        android:baselineAligned="false"
+        android:orientation="vertical"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="90dip">
+            android:layout_width="match_parent"
+            android:layout_height="90dp">
 
         <LinearLayout
-            android:id="@+id/layout_title_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:gravity="bottom|center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_title_am_pm"
+                android:id="@+id/layout_title_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:textSize="14sp" />
+                android:layout_centerVertical="true"
+                android:gravity="bottom|center"
+                android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_title_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dip"
-                android:textColor="@android:color/white"
-                android:textSize="52sp" />
+                    android:id="@+id/tv_title_am_pm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+            <TextView
+                    android:id="@+id/tv_title_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@android:color/white"
+                    android:textSize="52sp" />
         </LinearLayout>
 
         <Switch
-            android:id="@+id/sw_title_effect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true" />
+                android:id="@+id/sw_title_effect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dip"
-        android:gravity="center_vertical">
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center_vertical">
 
         <TextView
-            android:id="@+id/tv_title_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginRight="3dip"
-            android:gravity="center"
-            android:textColor="@color/colorTitleTag"
-            android:textSize="14sp"
-            android:visibility="gone" />
+                android:id="@+id/tv_title_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="3dp"
+                android:layout_marginTop="3dp"
+                android:gravity="center"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/colorTitleTag"
+                android:textSize="14sp"
+                android:visibility="gone" />
 
         <TextView
-            android:id="@+id/tv_title_date"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/tv_title_tag"
-            android:gravity="center"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+                android:id="@+id/tv_title_date"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/tv_title_tag"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
         <LinearLayout
-            android:id="@+id/layout_expend_more"
-            android:layout_width="100dip"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="8dip"
-            android:gravity="center_vertical|right"
-            android:orientation="horizontal">
+                android:id="@+id/layout_expend_more"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="8dp"
+                android:gravity="center_vertical|right"
+                android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/iv_expend_more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_expand_more_white_24dp" />
+                    android:id="@+id/iv_expend_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_expand_more_white_24dp" />
         </LinearLayout>
 
     </RelativeLayout>
+
     <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/line1_light_white" />
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/line1_light_white" />
 </LinearLayout>

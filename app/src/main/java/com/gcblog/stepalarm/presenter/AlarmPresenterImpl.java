@@ -136,8 +136,4 @@ public class AlarmPresenterImpl implements AlarmContract.Presenter, IAlarmCreate
         mAlarmModels.get(position).alarmSoundUrl = soundIdUrl;
         AlarmDatabaseManager.updateSoundRes((int) mAlarmModels.get(position).id, soundIdUrl, soundResTitle);
     }
-
-    public void clearAlarm(){
-        AlarmManagerHelper.cancelAlarms(mContext);
-    }
 }
