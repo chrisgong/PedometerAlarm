@@ -50,4 +50,28 @@ public class AlarmModel extends RealmObject {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "AlarmModel{" +
+                "id=" + id +
+                ", timeHour=" + timeHour +
+                ", timeMinute=" + timeMinute +
+                ", repeatSunday=" + repeatSunday +
+                ", repeatMonday=" + repeatMonday +
+                ", repeatTuesday=" + repeatTuesday +
+                ", repeatWednesday=" + repeatWednesday +
+                ", repeatThursday=" + repeatThursday +
+                ", repeatFriday=" + repeatFriday +
+                ", repeatSaturday=" + repeatSaturday +
+                ", repeatWeekly=" + repeatWeekly +
+                ", vibrate=" + vibrate +
+                ", alarmSoundUrl='" + alarmSoundUrl + '\'' +
+                ", alarmSoundTitle='" + alarmSoundTitle + '\'' +
+                ", isEnabled=" + isEnabled +
+                ", step=" + step +
+                ", tag='" + tag + '\'' +
+                ", hide=" + hide +
+                '}';
+    }
 }

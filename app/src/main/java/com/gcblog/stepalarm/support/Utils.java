@@ -6,6 +6,7 @@ import android.view.View;
 import com.gcblog.stepalarm.data.model.AlarmModel;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -54,5 +55,30 @@ public class Utils {
         int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         view.measure(w, h);
         return view.getMeasuredHeight();
+    }
+
+    /**
+     * 查询星期几
+     * @param dayOfWeek
+     * @return
+     */
+    public static String getRepeatingDay(int dayOfWeek) {
+        switch (dayOfWeek) {
+            case Calendar.SUNDAY:
+                return "周日";
+            case Calendar.MONDAY:
+                return "周一";
+            case Calendar.TUESDAY:
+                return "周二";
+            case Calendar.WEDNESDAY:
+                return "周三";
+            case Calendar.THURSDAY:
+                return "周四";
+            case Calendar.FRIDAY:
+                return "周五";
+            case Calendar.SATURDAY:
+                return "周六";
+        }
+        return "";
     }
 }

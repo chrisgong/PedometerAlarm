@@ -15,7 +15,7 @@ import com.gcblog.stepalarm.R;
 import com.gcblog.stepalarm.data.model.AlarmModel;
 import com.gcblog.stepalarm.presenter.AlarmContract;
 import com.gcblog.stepalarm.presenter.AlarmPresenterImpl;
-import com.gcblog.stepalarm.view.WrapContentLinearLayoutManager;
+import com.gcblog.stepalarm.view.widget.WrapContentLinearLayoutManager;
 import com.gcblog.stepalarm.view.adapter.AlarmAdapter;
 
 import org.androidannotations.annotations.AfterViews;
@@ -24,10 +24,8 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, AlarmContract.View {

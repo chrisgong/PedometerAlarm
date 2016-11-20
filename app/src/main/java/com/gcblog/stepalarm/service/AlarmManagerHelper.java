@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.util.Log;
 
 import com.gcblog.stepalarm.data.AlarmContract;
@@ -13,6 +12,7 @@ import com.gcblog.stepalarm.data.model.AlarmModel;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Administrator on 2016/11/19.
@@ -21,8 +21,6 @@ public class AlarmManagerHelper {
 
     /**
      * 设置系统闹钟
-     *
-     * @param context
      */
     public static void setAlarms(Context context) {
         cancelAlarms(context);
@@ -84,14 +82,12 @@ public class AlarmManagerHelper {
 
     /**
      * 取消闹钟
-     *
-     * @param context
      */
     public static void cancelAlarms(Context context) {
         List<AlarmModel> alarms = AlarmDatabaseManager.getAlarms();
         if (alarms != null) {
-            Log.e("cim", "cancelAlarms");
             alarms.stream().filter(alarm -> alarm.isEnabled).forEach(alarm -> {
+                Log.e("cim", "cancelAlarms：" + alarm.id);
                 PendingIntent pIntent = createPendingIntent(context, alarm);
                 android.app.AlarmManager alarmManager = (android.app.AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                 alarmManager.cancel(pIntent);
@@ -100,9 +96,9 @@ public class AlarmManagerHelper {
     }
 
     private static void setAlarm(Context context, Calendar calendar, PendingIntent pIntent) {
+        Log.e("cim", "setAlarm()");
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            Log.e("cim", "setAlarm:" + calendar.get(Calendar.DAY_OF_WEEK) + "-" + calendar.get(Calendar.DAY_OF_YEAR) + "-" + calendar.get(Calendar.HOUR_OF_DAY) + "-" + calendar.get(Calendar.MINUTE));
             alarmManager.setExact(android.app.AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
         } else {
             alarmManager.set(android.app.AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
@@ -110,14 +106,8 @@ public class AlarmManagerHelper {
     }
 
     private static PendingIntent createPendingIntent(Context context, AlarmModel model) {
-        Intent intent = new Intent(context, AlarmService_.class);
-        intent.putExtra(AlarmContract.IDD, model.id);
-        intent.putExtra(AlarmContract.TIME_HOUR, model.timeHour);
-        intent.putExtra(AlarmContract.TIME_MINUTE, model.timeMinute);
-        intent.putExtra(AlarmContract.TONE, Uri.decode(model.alarmSoundUrl));
-        intent.putExtra(AlarmContract.VIBRATE, model.vibrate);
-        intent.putExtra(AlarmContract.TAG, model.tag);
-        intent.putExtra(AlarmContract.STEP, model.step);
+        Intent intent = new Intent(context, AlarmService.class);
+        intent.putExtra(AlarmContract.IDD, String.valueOf(model.id));
         return PendingIntent.getService(context, (int) model.id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

@@ -39,6 +39,7 @@ public class AlarmDatabaseManager {
             model.id = setUniqueId(realm);
             model.timeHour = hour;
             model.timeMinute = min;
+            model.step = 30;
             realm.copyToRealm(model);
         }, () -> listener.onSuccess(model));
     }

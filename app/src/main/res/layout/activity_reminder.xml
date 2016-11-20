@@ -59,12 +59,10 @@
                 android:layout_marginRight="10dp"
                 android:text="剩余" />
 
-        <com.gcblog.stepalarm.view.widget.WheelView
-                android:id="@+id/wv_reminder_step"
+        <com.gcblog.stepalarm.view.widget.CountdownView
+                android:id="@+id/cv_reminder_step"
                 android:layout_width="50dip"
-                android:layout_height="50dip">
-
-        </com.gcblog.stepalarm.view.widget.WheelView>
+                android:layout_height="50dip" />
 
         <TextView
                 android:layout_width="wrap_content"
