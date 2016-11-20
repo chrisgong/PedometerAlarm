@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:drawableLeft="@drawable/ic_alarm_on_black_12dp"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:drawablePadding="6dip"
+            android:textColor="@color/colorReminder"
+            android:text="时钟" />
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dip"
+            android:orientation="horizontal"
+            android:layout_marginLeft="13dp"
+            android:gravity="bottom|left">
+
+        <TextView
+                android:id="@+id/reminder_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginRight="6dip"
+                android:text="闹钟"
+                android:textSize="14sp" />
+
+        <TextView
+                android:id="@+id/reminder_date_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/colorReminder"
+                android:text="周三 上午11:57"
+                android:textSize="18sp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:background="@color/bgReminderStepCount"
+            android:layout_marginTop="10dp"
+            android:gravity="center">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:layout_marginRight="10dp"
+                android:text="剩余" />
+
+        <com.gcblog.stepalarm.view.widget.WheelView
+                android:id="@+id/wv_reminder_step"
+                android:layout_width="50dip"
+                android:layout_height="50dip">
+
+        </com.gcblog.stepalarm.view.widget.WheelView>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dip"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:text="步" />
+    </LinearLayout>
+
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|right"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginRight="15dp"
+            android:textColor="@color/colorAccent"
+            android:text="* 只能移动记步取消闹钟"
+            android:textStyle="italic"
+            android:textSize="12sp" />
+</LinearLayout>

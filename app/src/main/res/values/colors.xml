@@ -7,5 +7,8 @@
     <color name="bgTitleLeftContent">#eb594691</color>
     <color name="bgTitleLeft">#594691</color>
     <color name="bgBackSideColor">#f4f0ff</color>
+    <color name="bgReminderStepCount">#f9f7ff</color>
     <color name="colorTitleTag">#d7d4e1</color>
+    <color name="colorReminder">#8a8891</color>
+    <color name="colorReminderClock">#6b6970</color>
 </resources>

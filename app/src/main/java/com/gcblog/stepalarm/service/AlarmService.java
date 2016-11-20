@@ -6,9 +6,6 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.gcblog.stepalarm.view.activity.AlarmScreenActivity;
-
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EService;
 
 /**
@@ -21,7 +18,7 @@ public class AlarmService extends Service{
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.e("cim", "------------------AlarmService Receiver");
 //		//打开闹钟提醒页面
-//		Intent alarmIntent = new Intent(getBaseContext(), AlarmScreenActivity.class);
+//		Intent alarmIntent = new Intent(getBaseContext(), AlarmReminderActivity.class);
 //		alarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //		alarmIntent.putExtras(intent);
 //		getApplication().startActivity(alarmIntent);
